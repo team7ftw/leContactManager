@@ -30,19 +30,15 @@ app = Flask(__name__)
 api = Api(app)
 
 
-class User(Resource):
-	"""Contains any information related to 
-	users of this contact manager. 
-	"""
-	
-	def get(self, id):
-		conn = db_connect.connect()
+@app.route('/CMApi/UserID', methods =['GET', 'PUT', 'POST', 'DELETE'])
+def userFunctionId(id):
+	if request.method == 'GET':
+		return get_user()
 		
-	def post(self, name):
-		pass
+	elif request.method == 'PUT':
+		usrname = request.args.get('usrname', '')
+		passwd = request.args.get('passwd', '')
+		return updateUser(id, usrname, passwd)
 	
-	def put(self, name):
-		pass
-		
-	def delete(self, name):
-		pass
+	elif request.method == 'DELETE':
+		return deleteUser(id)
