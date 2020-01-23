@@ -7,7 +7,11 @@ import urllib
 import psycopg2
 
 
-
+"""
+Helpful Gubs:
+	https://kite.com/blog/python/flask-restful-api-tutorial/
+	
+"""
 
 server = 'team7ftw.database.windows.net'
 database = 'ContactManager'
