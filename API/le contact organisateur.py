@@ -33,6 +33,8 @@ db_connect = pyodbc.connect('DRIVER='+driver+
 app = Flask(__name__)
 api = Api(app)
 
+
+# https://m.youtube.com/watch?v=dkgRxBw_4no
 @app.route('/test', methods=['GET'])
 def test():
 	if request.method == 'GET':
