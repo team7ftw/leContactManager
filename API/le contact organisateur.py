@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_restful import Api, Resource, reqparse
 from sqlalchemy import create_engine
 from json import dumps
@@ -19,8 +19,8 @@ username = 'admins'
 password = '#cop4331'
 driver = '{ODBC Driver 17 for SQL Server}'
 
-conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
-cursor = conn.cursor()
+#conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
+#cursor = conn.cursor()
 
 '''
 db_connect = pyodbc.connect('DRIVER='+driver+
@@ -33,7 +33,11 @@ db_connect = pyodbc.connect('DRIVER='+driver+
 app = Flask(__name__)
 api = Api(app)
 
-
+@app.route('/test', methods=['GET'])
+def test():
+	if request.method == 'GET':
+		return jsonify({"resposne": "Get Request Called"})
+		
 @app.route('/CMApi/UserID', methods =['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctionId(id):
 	if request.method == 'GET':
@@ -46,3 +50,7 @@ def userFunctionId(id):
 	
 	elif request.method == 'DELETE':
 		return deleteUser(id)
+		
+		
+if __name__ ==  '__main__':
+	app.run(debug=True, port=9090)
