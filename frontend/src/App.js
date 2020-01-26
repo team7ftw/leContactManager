@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // Router
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
 
 // Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -25,11 +25,17 @@ class App extends Component {
             <Link to="/" className="navbar-brand">Le Contact Manager</Link>
             <Navbar.Toggle aria-controls="navMenu" />
             <Navbar.Collapse id="navMenu">
-              <Nav className="ml-auto">
-                <Link to="/" className="nav-link">Contacts</Link>
-                <Link to="/create" className="nav-link">Create New</Link>
-                <Link to="/acount" className="nav-link">Acount</Link>
-              </Nav>
+              <ul class="nav nav-pills ml-auto">
+                <Nav.Item>
+                  <NavLink exact to="/" className="nav-link">Contacts</NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink to="/create" className="nav-link">Create New</NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink to="/acount" className="nav-link">Acount</NavLink>
+                </Nav.Item>
+              </ul>
             </Navbar.Collapse>
           </Navbar>
           <br />
