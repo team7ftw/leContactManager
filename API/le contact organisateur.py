@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_restful import Api, Resource, reqparse
-from sqlalchemy import create_engine
-from json import dumps
-import urllib
+#from sqlalchemy import create_engine
+#from json import dumps
+#import urllib
 
-import psycopg2
+#import psycopg2
 
 
 """
