@@ -21,11 +21,11 @@ class App extends Component {
     return (
       <Router>
         <div className="container">
-          <Navbar bg="transparent" expand="lg" className="py-3" variant="dark">
+          <Navbar bg="transparent" expand="lg" className="py-3 px-0" variant="dark">
             <Link to="/" className="navbar-brand">Le Contact Manager</Link>
             <Navbar.Toggle aria-controls="navMenu" />
             <Navbar.Collapse id="navMenu">
-              <Nav className="mr-auto">
+              <Nav className="ml-auto">
                 <Link to="/" className="nav-link">Contacts</Link>
                 <Link to="/create" className="nav-link">Create New</Link>
                 <Link to="/acount" className="nav-link">Acount</Link>
