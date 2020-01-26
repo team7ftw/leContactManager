@@ -27,10 +27,10 @@ class App extends Component {
             <Navbar.Collapse id="navMenu">
               <ul className="nav nav-pills ml-auto">
                 <Nav.Item>
-                  <NavLink exact to="/" className="nav-link">Contacts</NavLink>
+                  <NavLink exact to="/" className="nav-link mr-2">Contacts</NavLink>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLink to="/create" className="nav-link">Create New</NavLink>
+                  <NavLink to="/create" className="nav-link mr-2">Create New</NavLink>
                 </Nav.Item>
                 <Nav.Item>
                   <NavLink to="/acount" className="nav-link">Acount</NavLink>
