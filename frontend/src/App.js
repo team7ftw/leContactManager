@@ -25,7 +25,7 @@ class App extends Component {
             <Link to="/" className="navbar-brand">Le Contact Manager</Link>
             <Navbar.Toggle aria-controls="navMenu" />
             <Navbar.Collapse id="navMenu">
-              <ul class="nav nav-pills ml-auto">
+              <ul className="nav nav-pills ml-auto">
                 <Nav.Item>
                   <NavLink exact to="/" className="nav-link">Contacts</NavLink>
                 </Nav.Item>

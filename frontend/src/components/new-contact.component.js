@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
-import { Col } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+
 import Button from 'react-bootstrap/Button';
 
 class NewContact extends Component {
@@ -32,8 +34,8 @@ class NewContact extends Component {
             <div className="mt-4">
                 <h2 className="mb-4">Create a New Contact</h2>
                 <Form onSubmit={this.onSubmit}>
-                    <Form.Row>
-                        <Form.Group as={Col}>
+                    <Row>
+                        <Col className="my-2 col-12 col-md-6">
                             <Form.Label>First Name</Form.Label>
                             <Form.Control 
                                 type="text" 
@@ -41,9 +43,9 @@ class NewContact extends Component {
                                 value={this.state.c_firstname} 
                                 onChange={this.onChangeFirstName} 
                             />
-                        </Form.Group>
+                        </Col>
 
-                        <Form.Group as={Col}>
+                        <Col className="my-2 col-12 col-md-6">
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control 
                                 type="text" 
@@ -51,11 +53,11 @@ class NewContact extends Component {
                                 value={this.state.c_lastname} 
                                 onChange={this.onChangeLastName} 
                             />
-                        </Form.Group>
-                    </Form.Row>
+                        </Col>
+                    </Row>
 
-                    <Form.Row>
-                        <Form.Group as={Col}>
+                    <Row>
+                        <Col className="my-2 col-12 col-md-6">
                             <Form.Label>Phone</Form.Label>
                             <Form.Control 
                                 type="text" 
@@ -63,9 +65,9 @@ class NewContact extends Component {
                                 value={this.state.c_phone} 
                                 onChange={this.onChangePhone}
                             />
-                        </Form.Group>
+                        </Col>
 
-                        <Form.Group as={Col}>
+                        <Col className="my-2 col-12 col-md-6">
                             <Form.Label>Birthday</Form.Label>
                             <Form.Control 
                                 type="text" 
@@ -73,8 +75,8 @@ class NewContact extends Component {
                                 value={this.state.c_birthdate}
                                 onChange={this.onChangeBirthdate} 
                             />
-                        </Form.Group>
-                    </Form.Row>
+                        </Col>
+                    </Row>
 
                     <Form.Group>
                         <Form.Label>Address</Form.Label>
