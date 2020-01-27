@@ -1,4 +1,26 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
+
+import { Table } from 'react-bootstrap';
+import axios from 'axios';
+
+// Contact component
+// (not implemented)
+class ContactEntry extends Component {
+    render() {
+        return(
+            <tr>
+                <td>{this.props.num}</td>
+                <td>{this.props.contact.lastName}</td>
+                <td>{this.props.contact.firstName}</td>
+                <td>{this.props.contact.phone}</td>
+                <td>
+                    <Link to={"/edit/"+this.props.contact.id}>Edit</Link>
+                </td>
+            </tr>
+        );
+    }
+}
 
 class ContactList extends Component {
     render() {

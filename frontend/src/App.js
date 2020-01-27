@@ -16,6 +16,9 @@ import AccountSettings from './components/account-settings.component';
 // Custom styles
 import "./App.css";
 
+// TODO:
+// Implement edit route
+
 class App extends Component {
   render() {
     return (
