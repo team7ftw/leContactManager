@@ -6,6 +6,8 @@ import urllib
 
 import psycopg2
 
+import pyodbc
+
 
 """
 Helpful Gubs:
