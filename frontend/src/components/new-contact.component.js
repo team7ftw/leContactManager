@@ -33,7 +33,7 @@ class NewContact extends Component {
         return(
             <div className="mt-4">
                 <h2 className="mb-4">Create a New Contact</h2>
-                <Form onSubmit={this.onSubmit} className="fire-transparent">
+                <Form onSubmit={this.onSubmit}>
                     <Row>
                         <Col className="my-2 col-12 col-md-6">
                             <Form.Label>First Name</Form.Label>

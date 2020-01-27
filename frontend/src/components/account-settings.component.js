@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 class AccountSettings extends Component {
     render() {
         return(
-            <div>
-                <p>The Account Settings Component is active!</p>
+            <div className="mt-4">
+                <h2>Settings</h2>
             </div>
         );
     }
