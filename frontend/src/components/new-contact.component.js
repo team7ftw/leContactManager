@@ -103,6 +103,7 @@ class NewContact extends Component {
         e.preventDefault();
 
         // TODO: POST to API
+        // Will probably use axios
         console.log(`Form submitted:`);
         console.log(`Contact name: ${this.state.c_firstname} ${this.state.c_lastname}`);
 

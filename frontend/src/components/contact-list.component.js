@@ -6,7 +6,7 @@ class ContactList extends Component {
             <div className="mt-4">
                 <h2 className="mb-4">All Contacts</h2>
 
-                <table className="table table-striped table-hover table-dark">
+                <table className="table table-striped text-light borderless">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -40,7 +40,7 @@ class ContactList extends Component {
                     </tr>
                 </tbody>
             </table>
-            <p className="muted">This table just for design reference purposes.</p>
+            <p className="muted">This table just for design reference purposes it's not accessing anything yet.</p>
         </div>
         );
     }
