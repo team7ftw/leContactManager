@@ -25,9 +25,11 @@ password = '#cop4331'
 #conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
 #cursor = conn.cursor()
 
-
-db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw.database.windows.net', password='#cop4331', database='ContactManager')
-cur = db_conn.cursor()
+try:
+	db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins', password='#cop4331', database='ContactManager')
+	cur = db_conn.cursor()
+except Exception as e:
+	print(e)
 
 app = Flask(__name__)
 #api = Api(app)
