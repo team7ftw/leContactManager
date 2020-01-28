@@ -4,8 +4,6 @@ from sqlalchemy import create_engine
 from json import dumps
 import urllib
 
-import psycopg2
-
 import pymssql
 
 # import pyodbc
