@@ -39,7 +39,13 @@ app = Flask(__name__)
 @app.route('/test', methods=['GET'])
 def test():
 	if request.method == 'GET':
-		return jsonify({"resposne": "Get Request Called"})
+		try:
+			db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins', password='#cop4331', database='ContactManager')
+			cur = db_conn.cursor()
+		except Exception as e:
+			return str(e)
+
+		#return jsonify({"resposne": "Get Request Called"})
 		
 
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
