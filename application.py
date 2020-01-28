@@ -42,6 +42,7 @@ def test():
 		try:
 			db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins', password='#cop4331', database='ContactManager')
 			cur = db_conn.cursor()
+			return "Success"
 		except Exception as e:
 			return str(e)
 
