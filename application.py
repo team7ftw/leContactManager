@@ -15,6 +15,8 @@ import pymssql
 Helpful Gubs:
 	https://kite.com/blog/python/flask-restful-api-tutorial/
 	
+	https://docs.microsoft.com/en-us/sql/connect/python/pymssql/step-3-proof-of-concept-connecting-to-sql-using-pymssql?view=sql-server-ver15
+	
 """
 
 server = 'team7ftw.database.windows.net'
@@ -36,6 +38,8 @@ db_connect = pyodbc.connect('DRIVER='+driver+
 '''
 
 db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw.database.windows.net', password='#cop4331', database='ContactManager')
+cursor = db_conn.cursor()
+
 app = Flask(__name__)
 #api = Api(app)
 
@@ -44,23 +48,8 @@ app = Flask(__name__)
 @app.route('/test', methods=['GET'])
 def test():
 	if request.method == 'GET':
-		return jsonify({"resposne": "Get Request Called",
-						"Database Connection": db_conn})
+		return jsonify({"resposne": "Get Request Called"})
 		
-'''
-@app.route('/CMApi/UserID', methods =['GET', 'PUT', 'POST', 'DELETE'])
-def userFunctionId(id):
-	if request.method == 'GET':
-		return get_user()
-		
-	elif request.method == 'PUT':
-		usrname = request.args.get('usrname', '')
-		passwd = request.args.get('passwd', '')
-		return updateUser(id, usrname, passwd)
-	
-	elif request.method == 'DELETE':
-		return deleteUser(id)
-'''
 
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
@@ -69,14 +58,22 @@ def userFunctions():
 			passwd = request.args.get('passwd', '')
 			
 			# DATABASE CALL TO RETREVIVE
-			return "Success"
+			query = "SELECT * from dbo.UserLogin WHERE login_un={} AND login_pw={}".format(usrname, passwd)
+			cursor.execute(query)
+			all = cursor.fetchall()
+			
+			return jsonify(all)
 		
 		elif request.method == 'PUT':
 			usrname = request.args.get('usrname', '')
 			passwd = request.args.get('passwd', '')
 			
 			# DATABASE CALL TO INSERT NEW USER
-			return "Sucess"
+			query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ({0}, {1});".format(usrname, passwd)
+			cursor.execute(query)
+			all = cursor.fetchall()
+			
+			return jsonify(all)
 			
 		elif request.method == 'POST':
 			usrname = request.args.get('usrname', '')
