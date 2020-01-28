@@ -6,7 +6,7 @@ import urllib
 
 import pymssql
 
-# import pyodbc
+
 
 
 """
@@ -21,21 +21,12 @@ server = 'team7ftw.database.windows.net'
 database = 'ContactManager'
 username = 'admins'
 password = '#cop4331'
-driver = '{ODBC Driver 17 for SQL Server}'
 
 #conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
 #cursor = conn.cursor()
 
-'''
-db_connect = pyodbc.connect('DRIVER='+driver+
-				';SERVER='+server+
-				';PORT=1433;DATABASE='+database+
-				';UID='+username+
-				';PWD='+ password
-				)
-'''
 
-#db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw.database.windows.net', password='#cop4331', database='ContactManager')
+db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw.database.windows.net', password='#cop4331', database='ContactManager')
 #cursor = db_conn.cursor()
 
 app = Flask(__name__)
