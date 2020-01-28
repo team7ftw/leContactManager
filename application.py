@@ -27,7 +27,7 @@ password = '#cop4331'
 
 
 db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw.database.windows.net', password='#cop4331', database='ContactManager')
-#cursor = db_conn.cursor()
+cur = db_conn.cursor()
 
 app = Flask(__name__)
 #api = Api(app)
@@ -46,10 +46,12 @@ def userFunctions():
 			usrname = request.args.get('usrname', '')
 			passwd = request.args.get('passwd', '')
 			
+			
 			# DATABASE CALL TO RETREVIVE
 			#query = "SELECT * from dbo.UserLogin WHERE login_un={} AND login_pw={}".format(usrname, passwd)
 			#cursor.execute(query)
 			#all = cursor.fetchall()
+			
 			
 			return "Success" #jsonify(all)
 		
