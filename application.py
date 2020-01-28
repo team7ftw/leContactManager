@@ -58,22 +58,22 @@ def userFunctions():
 			passwd = request.args.get('passwd', '')
 			
 			# DATABASE CALL TO RETREVIVE
-			query = "SELECT * from dbo.UserLogin WHERE login_un={} AND login_pw={}".format(usrname, passwd)
-			cursor.execute(query)
-			all = cursor.fetchall()
+			#query = "SELECT * from dbo.UserLogin WHERE login_un={} AND login_pw={}".format(usrname, passwd)
+			#cursor.execute(query)
+			#all = cursor.fetchall()
 			
-			return jsonify(all)
+			return "Success" #jsonify(all)
 		
 		elif request.method == 'PUT':
 			usrname = request.args.get('usrname', '')
 			passwd = request.args.get('passwd', '')
 			
 			# DATABASE CALL TO INSERT NEW USER
-			query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ({0}, {1});".format(usrname, passwd)
-			cursor.execute(query)
-			all = cursor.fetchall()
+			#query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ({0}, {1});".format(usrname, passwd)
+			#cursor.execute(query)
+			#all = cursor.fetchall()
 			
-			return jsonify(all)
+			return "Success" #jsonify(all)
 			
 		elif request.method == 'POST':
 			usrname = request.args.get('usrname', '')
