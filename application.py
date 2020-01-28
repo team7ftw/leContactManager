@@ -34,6 +34,8 @@ db_connect = pyodbc.connect('DRIVER='+driver+
 				';PWD='+ password
 				)
 '''
+
+db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw.database.windows.net', password-'#cop4331', database='ContactManager')
 app = Flask(__name__)
 #api = Api(app)
 
@@ -42,7 +44,8 @@ app = Flask(__name__)
 @app.route('/test', methods=['GET'])
 def test():
 	if request.method == 'GET':
-		return jsonify({"resposne": "Get Request Called"})
+		return jsonify({"resposne": "Get Request Called",
+						"Database Connection": db_conn})
 		
 '''
 @app.route('/CMApi/UserID', methods =['GET', 'PUT', 'POST', 'DELETE'])
