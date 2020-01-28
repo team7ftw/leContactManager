@@ -38,7 +38,7 @@ db_connect = pyodbc.connect('DRIVER='+driver+
 '''
 
 db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw.database.windows.net', password='#cop4331', database='ContactManager')
-cursor = db_conn.cursor()
+#cursor = db_conn.cursor()
 
 app = Flask(__name__)
 #api = Api(app)
