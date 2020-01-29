@@ -54,7 +54,7 @@ def testDB():
 		db_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
 		return "Success"
 	except Exception as e:
-		return str(e)
+		return "Reached except block:\n" + str(e)
 
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
