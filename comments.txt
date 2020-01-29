@@ -1,0 +1,39 @@
+"""
+Helpful Gubs:
+	https://kite.com/blog/python/flask-restful-api-tutorial/
+	
+	https://docs.microsoft.com/en-us/sql/connect/python/pymssql/step-3-proof-of-concept-connecting-to-sql-using-pymssql?view=sql-server-ver15
+	
+"""
+
+
+
+
+
+
+'''
+try:
+	db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins', password='#cop4331', database='ContactManager')
+	cur = db_conn.cursor()
+except Exception as e:
+	print(e)
+'''
+
+
+
+		'''
+@app.route('/db2', methods=['GET'])
+def testDB2():
+	
+		db_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
+		cur = db_conn.cursor()
+		
+		cursor.execute("INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES (CW, 1234);")
+		cursor.execute("SELECT * FROM dbo.UserLogin WHERE login_un='CW'")
+		
+		return jsonify(cursor)
+	 '''
+
+
+
+
