@@ -10,7 +10,9 @@ from mysql.connector import errorcode
 
 #conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
 #cursor = conn.cursor()
-
+conn = mysql.connector.connect(user="cweik@testserver012345", password="#Pokemon", host="testserver012345.mysql.database.azure.com", port=3306)
+cursor = conn.cursor()
+	
 app = Flask(__name__)
 #api = Api(app)
 
@@ -101,31 +103,35 @@ def userFunctions():
 			usrname = request.args.get('usrname', '')
 			passwd = request.args.get('passwd', '')
 			
+			#cursor.execute("USE testdatabase012345 INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 			
 			# DATABASE CALL TO RETREVIVE
-			#query = "SELECT * from dbo.UserLogin WHERE login_un={} AND login_pw={}".format(usrname, passwd)
-			#cursor.execute(query)
-			#all = cursor.fetchall()
+			query = "USE testdatabase012345 SELECT * FROM users WHERE username={} AND password={};".format(usrname, passwd)
+			cursor.execute(query)
+			all = cursor.fetchall()
 			
 			
-			return "Success" #jsonify(all)
+			return jsonify(all) #"Success" #
 		
 		elif request.method == 'PUT':
 			usrname = request.args.get('usrname', '')
 			passwd = request.args.get('passwd', '')
 			
 			# DATABASE CALL TO INSERT NEW USER
-			#query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ({0}, {1});".format(usrname, passwd)
-			#cursor.execute(query)
-			#all = cursor.fetchall()
+			query = "USE testdatabase012345 INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
+			cursor.execute(query)
+			all = cursor.fetchall()
 			
-			return "Success" #jsonify(all)
+			return jsonify(all) #"Success" #
 			
 		elif request.method == 'POST':
-			usrname = request.args.get('usrname', '')
-			passwd = request.args.get('passwd', '')
+			curUn = request.args.get('curUN', '')
+			
+			newUN = request.args.get('newUN', '')
+			newPW = request.args.get('newPW', '')
 			
 			# DATABASE CALL TO UPDATE USER
+			query = "UPDATE dbo.UserLogin SET login_un={}, login_pw={} WHERE login_un={};".format(newUN, newPW, curUN)
 			return "Success"
 		
 		elif request.method == 'DELETE':
@@ -133,7 +139,7 @@ def userFunctions():
 			passwd = request.args.get('passwd', '')
 			
 			#DATABASE CALL TO REMOVE USER
-			
+			query = "DELETE FROM dbo.UserLogin WHERE login_un={} AND login_pw={};".format(usrname, passwd)
 			return "Success"
 		
 		else:
