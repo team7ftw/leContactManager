@@ -47,7 +47,7 @@ def userFunctions():
 			
 			
 			# DATABASE CALL TO RETREVIVE
-			#query = "SELECT * from dbo.UserLogin WHERE login_un={} AND login_pw={}".format(usrname, passwd)
+			query = "SELECT * from dbo.UserLogin WHERE login_un={} AND login_pw={}".format(usrname, passwd)
 			#cursor.execute(query)
 			#all = cursor.fetchall()
 			
@@ -59,17 +59,20 @@ def userFunctions():
 			passwd = request.args.get('passwd', '')
 			
 			# DATABASE CALL TO INSERT NEW USER
-			#query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ({0}, {1});".format(usrname, passwd)
+			query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ({0}, {1});".format(usrname, passwd)
 			#cursor.execute(query)
 			#all = cursor.fetchall()
 			
 			return "Success" #jsonify(all)
 			
 		elif request.method == 'POST':
-			usrname = request.args.get('usrname', '')
-			passwd = request.args.get('passwd', '')
+			curUn = request.args.get('curUN', '')
+			
+			newUN = request.args.get('newUN', '')
+			newPW = request.args.get('newPW', '')
 			
 			# DATABASE CALL TO UPDATE USER
+			query = "UPDATE dbo.UserLogin SET login_un={}, login_pw={} WHERE login_un={};".format(newUN, newPW, curUN)
 			return "Success"
 		
 		elif request.method == 'DELETE':
@@ -77,7 +80,7 @@ def userFunctions():
 			passwd = request.args.get('passwd', '')
 			
 			#DATABASE CALL TO REMOVE USER
-			
+			query = "DELETE FROM dbo.UserLogin WHERE login_un={} AND login_pw={};".format(usrname, passwd)
 			return "Success"
 		
 		else:
