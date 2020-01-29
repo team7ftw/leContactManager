@@ -56,6 +56,7 @@ def testDB():
 	except Exception as e:
 		return "Reached except block:\n" + str(e)
 
+		'''
 @app.route('/db2', methods=['GET'])
 def testDB2():
 	
@@ -66,7 +67,7 @@ def testDB2():
 		cursor.execute("SELECT * FROM dbo.UserLogin WHERE login_un='CW')
 		
 		return jsonify(cursor)
-	 
+	 '''
 
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
