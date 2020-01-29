@@ -6,7 +6,6 @@ gunicorn==19.9.0
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
-psycopg2==2.8.4
 ptvsd==4.3.2
 pytz==2019.3
 six==1.14.0
