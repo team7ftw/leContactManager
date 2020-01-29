@@ -3,16 +3,10 @@ from flask_restful import Api, Resource, reqparse
 from sqlalchemy import create_engine
 from json import dumps
 import urllib
+import traceback
 
-#import pymssql
-
-import pyodbc
-
-
-server = 'team7ftw.database.windows.net'
-database = 'ContactManager'
-username = 'admins'
-password = '#cop4331'
+import mysql.connector
+from mysql.connector import errorcode
 
 #conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
 #cursor = conn.cursor()
@@ -21,23 +15,85 @@ app = Flask(__name__)
 #api = Api(app)
 
 
-# https://m.youtube.com/watch?v=dkgRxBw_4no  
+# https://m.youtube.com/watch?v=dkgRxBw_4no
 @app.route('/test', methods=['GET'])
 def test():
 	if request.method == 'GET':
 		return jsonify({"resposne": "Get Request Called"})
 		
-@app.route('/db', methods=['GET'])
-def testDB():
+@app.route('/newtable', methods=['GET'])
+def newTable():
+	retString = "\n"
 	try:
-		# db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw', password='#cop4331', database='ContactManager')
-		# cur = db_conn.cursor()
-		
-		db_conn = pyodbc.connect('DRIVER={ODBC Driver 13 for SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
+		conn = mysql.connector.connect(user="cweik@testserver012345", password="#Pokemon", host="testserver012345.mysql.database.azure.com", port=3306)
+		retString += "Connected\n"
+		cursor = conn.cursor()
+		cursor.execute("USE testdatabase012345;")
+		cursor.execute("DROP TABLE IF EXISTS users;")
+		retString += "Finished dropping table (if existed)\n"
+		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(50));")
+		retString += "Finished creating table.\n"
+		conn.commit()
+		cursor.close()
+		conn.close()
+		retString += "Done.\n"
+		return retString
+
 	except Exception as e:
-		return "Reached except block:\n" + str(e)
-	else:
-		return "Success"
+		tb = traceback.format_exc()
+		return "Return string:" + retString + "Exception:\n" + tb
+
+@app.route('/addtotable', methods=['GET'])
+def addToTable():
+	retString = "\n"
+	try:
+		conn = mysql.connector.connect(user="cweik@testserver012345", password="#Pokemon", host="testserver012345.mysql.database.azure.com", port=3306)
+		retString += "Connected\n"
+		usrname = request.args.get('usrname', '')
+		passwd = request.args.get('passwd', '')
+		cursor = conn.cursor()
+		cursor.execute("USE testdatabase012345")
+		cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
+		retString += "Inserted a new row: (" + usrname + ", " + passwd + ")\n"
+
+		conn.commit()
+		cursor.close()
+		conn.close()
+		retString += "Done.\n"
+		return retString
+
+	except Exception as e:
+		tb = traceback.format_exc()
+		return "Return string:" + retString + "Exception:\n" + tb
+
+@app.route('/readtable', methods=['GET'])
+def readTable():
+	retString = "\n"
+	try:
+		conn = mysql.connector.connect(user="cweik@testserver012345", password="#Pokemon", host="testserver012345.mysql.database.azure.com", port=3306)
+		retString += "Connected\n"
+		cursor = conn.cursor()
+		usrname = request.args.get('usrname', '')
+		passwd = request.args.get('passwd', '')
+		cursor.execute("USE testdatabase012345")
+		cursor.execute("SELECT * FROM users;")
+		rows = cursor.fetchall()
+
+		retString += "Read " + str(cursor.rowcount) + " row(s) of data.\n"
+		# Print all rows
+		for row in rows:
+			retString += "row = " + str(row[0]) + ": " +  str(row[1]) + " " + str(row[2]) + "\n"
+
+		conn.commit()
+		cursor.close()
+		conn.close()
+		retString += "Done.\n"
+		return retString
+
+	except Exception as e:
+		tb = traceback.format_exc()
+		return "Return string:" + retString + "Exception:\n" + tb
+	
 
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
