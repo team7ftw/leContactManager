@@ -25,10 +25,10 @@ def test():
 def newTable():
 	retString = "\n"
 	try:
-		conn = mysql.connector.connect(user="cweik@testserver012345", password="#Pokemon", host="testserver012345.mysql.database.azure.com", port=3306)
+		conn = mysql.connector.connect(user="cweik@cop4331group7dbserver", password="#Pokemon", host="cop4331group7dbserver.mysql.database.azure.com", port=3306)
 		retString += "Connected\n"
 		cursor = conn.cursor()
-		cursor.execute("USE testdatabase012345;")
+		cursor.execute("USE ContactManagerDB;")
 		cursor.execute("DROP TABLE IF EXISTS users;")
 		retString += "Finished dropping table (if existed)\n"
 		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(50));")
