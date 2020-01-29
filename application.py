@@ -56,6 +56,18 @@ def testDB():
 	except Exception as e:
 		return "Reached except block:\n" + str(e)
 
+@app.route('/db2', methods=['GET'])
+def testDB2():
+	
+		db_conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
+		cur = db_conn.cursor()
+		
+		cursor.execute("INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES (CW, 1234);")
+		cursor.execute("SELECT * FROM dbo.UserLogin WHERE login_un='CW')
+		
+		return jsonify(cursor)
+	 
+
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
 		if request.method == 'GET':
