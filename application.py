@@ -48,10 +48,10 @@ def test():
 @app.route('/db', methods=['GET'])
 def testDB():
 	try:
-		db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw', password='#cop4331', database='ContactManager')
+		# db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw', password='#cop4331', database='ContactManager')
 		#cur = db_conn.cursor()
 		
-		#db_conn = pyodbc.connect('DRIVER={SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
+		db_conn = pyodbc.connect('DRIVER={SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
 		return "Success"
 	except Exception as e:
 		return "Reached except block:\n" + str(e)
@@ -64,7 +64,7 @@ def testDB2():
 		cur = db_conn.cursor()
 		
 		cursor.execute("INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES (CW, 1234);")
-		cursor.execute("SELECT * FROM dbo.UserLogin WHERE login_un='CW')
+		cursor.execute("SELECT * FROM dbo.UserLogin WHERE login_un='CW'")
 		
 		return jsonify(cursor)
 	 '''
