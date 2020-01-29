@@ -33,10 +33,11 @@ def testDB():
 		# db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw', password='#cop4331', database='ContactManager')
 		# cur = db_conn.cursor()
 		
-		db_conn = pyodbc.connect('DRIVER={SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
-		return "Success"
+		db_conn = pyodbc.connect('DRIVER={ODBC Driver 13 for SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
 	except Exception as e:
 		return "Reached except block:\n" + str(e)
+	else:
+		return "Success"
 
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
