@@ -27,9 +27,6 @@ def test():
 def newTable():
 	retString = "\n"
 	try:
-		conn = mysql.connector.connect(user="cweik@cop4331group7dbserver", password="#Pokemon", host="cop4331group7dbserver.mysql.database.azure.com", port=3306)
-		retString += "Connected\n"
-		cursor = conn.cursor()
 		cursor.execute("USE ContactManagerDB;")
 		cursor.execute("DROP TABLE IF EXISTS users;")
 		retString += "Finished dropping table (if existed)\n"
@@ -49,11 +46,8 @@ def newTable():
 def addToTable():
 	retString = "\n"
 	try:
-		conn = mysql.connector.connect(user="cweik@testserver012345", password="#Pokemon", host="testserver012345.mysql.database.azure.com", port=3306)
-		retString += "Connected\n"
 		usrname = request.args.get('usrname', '')
 		passwd = request.args.get('passwd', '')
-		cursor = conn.cursor()
 		cursor.execute("USE testdatabase012345")
 		cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 		retString += "Inserted a new row: (" + usrname + ", " + passwd + ")\n"
@@ -72,8 +66,6 @@ def addToTable():
 def readTable():
 	retString = "\n"
 	try:
-		conn = mysql.connector.connect(user="cweik@testserver012345", password="#Pokemon", host="testserver012345.mysql.database.azure.com", port=3306)
-		retString += "Connected\n"
 		cursor = conn.cursor()
 		usrname = request.args.get('usrname', '')
 		passwd = request.args.get('passwd', '')
