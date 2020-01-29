@@ -10,7 +10,9 @@ from mysql.connector import errorcode
 
 #conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
 #cursor = conn.cursor()
-
+conn = mysql.connector.connect(user="cweik@testserver012345", password="#Pokemon", host="testserver012345.mysql.database.azure.com", port=3306)
+cursor = conn.cursor()
+	
 app = Flask(__name__)
 #api = Api(app)
 
@@ -101,25 +103,26 @@ def userFunctions():
 			usrname = request.args.get('usrname', '')
 			passwd = request.args.get('passwd', '')
 			
+			#cursor.execute("USE testdatabase012345 INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 			
 			# DATABASE CALL TO RETREVIVE
-			query = "SELECT * from dbo.UserLogin WHERE login_un={} AND login_pw={}".format(usrname, passwd)
-			#cursor.execute(query)
-			#all = cursor.fetchall()
+			query = "USE testdatabase012345 SELECT * FROM users WHERE username={} AND password={}".format(usrname, passwd)
+			cursor.execute(query)
+			all = cursor.fetchall()
 			
 			
-			return "Success" #jsonify(all)
+			return jsonify(all) #"Success" #
 		
 		elif request.method == 'PUT':
 			usrname = request.args.get('usrname', '')
 			passwd = request.args.get('passwd', '')
 			
 			# DATABASE CALL TO INSERT NEW USER
-			query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ({0}, {1});".format(usrname, passwd)
-			#cursor.execute(query)
-			#all = cursor.fetchall()
+			query = "USE testdatabase012345 INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
+			cursor.execute(query)
+			all = cursor.fetchall()
 			
-			return "Success" #jsonify(all)
+			return jsonify(all) #"Success" #
 			
 		elif request.method == 'POST':
 			curUn = request.args.get('curUN', '')
