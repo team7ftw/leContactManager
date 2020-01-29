@@ -48,10 +48,10 @@ def test():
 @app.route('/db', methods=['GET'])
 def testDB():
 	try:
-		#db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw', password='#cop4331', database='ContactManager')
+		db_conn = pymssql.connect(server='team7ftw.database.windows.net', user='admins@team7ftw', password='#cop4331', database='ContactManager')
 		#cur = db_conn.cursor()
 		
-		db_conn = pyodbc.connect('DRIVER={SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
+		#db_conn = pyodbc.connect('DRIVER={SQL Server};SERVER={0};DATABASE={1};UID={2};PWD={3}'.format(server, database, username, password))
 		return "Success"
 	except Exception as e:
 		return "Reached except block:\n" + str(e)
