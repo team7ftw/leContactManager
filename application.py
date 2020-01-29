@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from json import dumps
 import urllib
 
-import pymssql
+#import pymssql
 
 import pyodbc
 
