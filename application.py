@@ -10,8 +10,7 @@ from mysql.connector import errorcode
 
 #conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
 #cursor = conn.cursor()
-conn = mysql.connector.connect(user="cweik@cop4331group7dbserver", password="#Pokemon", host="cop4331group7dbserver.mysql.database.azure.com", port=3306)
-cursor = conn.cursor()
+
 	
 app = Flask(__name__)
 #api = Api(app)
@@ -27,14 +26,16 @@ def test():
 def newTable():
 	retString = "\n"
 	try:
+		connection = connect()
+		cursor = connection.cursor()
+
 		cursor.execute("USE ContactManagerDB;")
 		cursor.execute("DROP TABLE IF EXISTS users;")
 		retString += "Finished dropping table (if existed)\n"
 		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(50));")
 		retString += "Finished creating table.\n"
-		conn.commit()
-		cursor.close()
-		conn.close()
+
+		cleanup(connection, cursor)
 		retString += "Done.\n"
 		return retString
 
@@ -46,15 +47,16 @@ def newTable():
 def addToTable():
 	retString = "\n"
 	try:
+		connection = connect()
+		cursor = connection.cursor()
+
 		usrname = request.args.get('usrname', '')
 		passwd = request.args.get('passwd', '')
-		cursor.execute("USE testdatabase012345")
+		cursor.execute("USE ContactManagerDB")
 		cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 		retString += "Inserted a new row: (" + usrname + ", " + passwd + ")\n"
 
-		conn.commit()
-		cursor.close()
-		conn.close()
+		cleanup(connection, cursor)
 		retString += "Done.\n"
 		return retString
 
@@ -66,10 +68,12 @@ def addToTable():
 def readTable():
 	retString = "\n"
 	try:
-		cursor = conn.cursor()
+		connection = connect()
+		cursor = connection.cursor()
+		
 		usrname = request.args.get('usrname', '')
 		passwd = request.args.get('passwd', '')
-		cursor.execute("USE testdatabase012345")
+		cursor.execute("USE ContactManagerDB")
 		cursor.execute("SELECT * FROM users;")
 		rows = cursor.fetchall()
 
@@ -78,9 +82,8 @@ def readTable():
 		for row in rows:
 			retString += "row = " + str(row[0]) + ": " +  str(row[1]) + " " + str(row[2]) + "\n"
 
-		conn.commit()
-		cursor.close()
-		conn.close()
+		
+		cleanup(connection, cursor)
 		retString += "Done.\n"
 		return retString
 
@@ -91,14 +94,18 @@ def readTable():
 
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
+	
+		connection = connect()
+		cursor = connection.cursor()
+
 		if request.method == 'GET':
 			usrname = request.args.get('usrname', '')
 			passwd = request.args.get('passwd', '')
 			
-			#cursor.execute("USE testdatabase012345 INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
+			#cursor.execute("USE ContactManagerDB INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 			
 			# DATABASE CALL TO RETREVIVE
-			query = "USE testdatabase012345 SELECT * FROM users WHERE username={} AND password={};".format(usrname, passwd)
+			query = "USE ContactManagerDB SELECT * FROM users WHERE username={} AND password={};".format(usrname, passwd)
 			cursor.execute(query)
 			all = cursor.fetchall()
 			
@@ -110,7 +117,7 @@ def userFunctions():
 			passwd = request.args.get('passwd', '')
 			
 			# DATABASE CALL TO INSERT NEW USER
-			query = "USE testdatabase012345 INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
+			query = "USE ContactManagerDB INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
 			cursor.execute(query)
 			all = cursor.fetchall()
 			
@@ -185,8 +192,15 @@ def userContact():
 		return "Success"
 		
 	
-		
-		
+def connect():
+	connection = mysql.connector.connect(user="cweik@cop4331group7dbserver", password="#Pokemon", host="cop4331group7dbserver.mysql.database.azure.com", port=3306)
+	return connection
+
+def cleanup(connection, cursor):
+	connection.commit()
+	cursor.close()
+	connection.close()
+	
 	
 		
 		
