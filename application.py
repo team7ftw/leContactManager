@@ -106,7 +106,7 @@ def userFunctions():
 			#cursor.execute("USE testdatabase012345 INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 			
 			# DATABASE CALL TO RETREVIVE
-			query = "USE testdatabase012345 SELECT * FROM users WHERE username={} AND password={}".format(usrname, passwd)
+			query = "USE testdatabase012345 SELECT * FROM users WHERE username={} AND password={};".format(usrname, passwd)
 			cursor.execute(query)
 			all = cursor.fetchall()
 			
