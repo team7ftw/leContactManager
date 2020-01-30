@@ -95,58 +95,58 @@ def readTable():
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
 	
-		connection = connect()
-		cursor = connection.cursor()
+		try:
+			connection = connect()
+			cursor = connection.cursor()
 
-		if request.method == 'GET':
-			usrname = request.args.get('usrname', '')
-			passwd = request.args.get('passwd', '')
+			if request.method == 'GET':
+				usrname = request.args.get('usrname', '')
+				passwd = request.args.get('passwd', '')
+				
+				#cursor.execute("USE ContactManagerDB INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
+				
+				# DATABASE CALL TO RETREVIVE
+				query = "USE ContactManagerDB SELECT * FROM users WHERE username={} AND password={};".format(usrname, passwd)
+				cursor.execute(query)
+				all = cursor.fetchall()				
+				return jsonify(all) #"Success" #
 			
-			#cursor.execute("USE ContactManagerDB INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
+			elif request.method == 'PUT':
+				usrname = request.args.get('usrname', '')
+				passwd = request.args.get('passwd', '')
+				
+				# DATABASE CALL TO INSERT NEW USER
+				query = "USE ContactManagerDB INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
+				cursor.execute(query)
+				all = cursor.fetchall()
+				
+				return jsonify(all) #"Success" #
+				
+			elif request.method == 'POST':
+				curUn = request.args.get('curUN', '')
+				
+				newUN = request.args.get('newUN', '')
+				newPW = request.args.get('newPW', '')
+				
+				# DATABASE CALL TO UPDATE USER
+				query = "UPDATE dbo.UserLogin SET login_un={}, login_pw={} WHERE login_un={};".format(newUN, newPW, curUN)
+				return "Success"
 			
-			# DATABASE CALL TO RETREVIVE
-			query = "USE ContactManagerDB SELECT * FROM users WHERE username={} AND password={};".format(usrname, passwd)
-			cursor.execute(query)
-			all = cursor.fetchall()
-			cleanup(connection, cursor)
+			elif request.method == 'DELETE':
+				usrname = request.args.get('usrname', '')
+				passwd = request.args.get('passwd', '')
+				
+				#DATABASE CALL TO REMOVE USER
+				query = "DELETE FROM dbo.UserLogin WHERE login_un={} AND login_pw={};".format(usrname, passwd)
+				return "Success"
 			
-			return jsonify(all) #"Success" #
-		
-		elif request.method == 'PUT':
-			usrname = request.args.get('usrname', '')
-			passwd = request.args.get('passwd', '')
-			
-			# DATABASE CALL TO INSERT NEW USER
-			query = "USE ContactManagerDB INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
-			cursor.execute(query)
-			all = cursor.fetchall()
-			
-			cleanup(connection, cursor)
-			
-			return jsonify(all) #"Success" #
-			
-		elif request.method == 'POST':
-			curUn = request.args.get('curUN', '')
-			
-			newUN = request.args.get('newUN', '')
-			newPW = request.args.get('newPW', '')
-			
-			# DATABASE CALL TO UPDATE USER
-			query = "UPDATE dbo.UserLogin SET login_un={}, login_pw={} WHERE login_un={};".format(newUN, newPW, curUN)
-			cleanup(connection, cursor)
-			return "Success"
-		
-		elif request.method == 'DELETE':
-			usrname = request.args.get('usrname', '')
-			passwd = request.args.get('passwd', '')
-			
-			#DATABASE CALL TO REMOVE USER
-			query = "DELETE FROM dbo.UserLogin WHERE login_un={} AND login_pw={};".format(usrname, passwd)
-			cleanup(connection, cursor)
-			return "Success"
+			else:
+				return "None"
+		except Exception as e:
+			return "Error: {}".format(e)
 		
 		else:
-			return "None"
+			cleanup(connection, cursor)
 			
 @app.route('/User/Contacts', methods = ['GET'])
 def getUserContacts():
