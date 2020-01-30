@@ -25,7 +25,7 @@
 
                     <div class="collapse navbar-collapse" id="navMenu">
                         <ul class="navbar-nav nav-pills ml-auto">
-                            <a class="nav-link px-2 ml-2" href="#">
+                            <a class="nav-link px-2 ml-2" href="index.html">
                                 Contacts
                             </a>
                             <a class="nav-link px-2 ml-2 active" href="#">
@@ -41,7 +41,7 @@
                 <main class="mt-4">
                     <h2 class="mb-4">Create a New Contact</h2>
 
-                    <form onsubmit="onSubmit()">
+                    <form id="newContactForm">
                         <div class="row">
                             <div class="col-12 col-md-6 my-2">
                                 <label for="firstName">First Name</label>
@@ -79,8 +79,22 @@
 
         <script>
 
-            function onSubmit() {
-                // TODO
+            const form = document.getElementById('newContactForm');
+
+            form.onsubmit = e => {
+                // Prevent page refresh
+                e.preventDefault();
+
+                console.log('Testing API connection...');
+
+                getData('https://cop4331group7api.azurewebsites.net/Users').then(res => {
+                        console.log('Server response: ' + res.resposne);
+                    });
+            }
+
+            async function getData(url) {
+                const res = await fetch(url);
+                return await res.json();
             }
 
         </script>
