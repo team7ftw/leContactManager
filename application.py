@@ -193,7 +193,7 @@ def userContact():
 		
 	
 def connect():
-	connection = mysql.connector.connect(user="cweik@cop4331group7dbserver", password="#Pokemon", host="cop4331group7dbserver.mysql.database.azure.com", port=3306)
+	connection = mysql.connector.connect(user="admins@cop4331group7dbserver", password="#cop4331", host="cop4331group7dbserver.mysql.database.azure.com", port=3306)
 	return connection
 
 def cleanup(connection, cursor):
