@@ -22,8 +22,8 @@ def test():
 	if request.method == 'GET':
 		return jsonify({"resposne": "Get Request Called"})
 		
-@app.route('/newtable/userLogin', methods=['GET'])
-def newTable():
+@app.route('/newtable/users', methods=['GET'])
+def newUsersTable():
 	retString = "\n"
 	try:
 		connection = connect()
@@ -44,7 +44,7 @@ def newTable():
 		return "Return string:" + retString + "Exception:\n" + tb
 		
 @app.route('/newtable/contacts', methods=['GET'])
-def newTable():
+def newContactsTable():
 	retString = "\n"
 	try:
 		connection = connect()
@@ -53,7 +53,7 @@ def newTable():
 		cursor.execute("USE ContactManagerDB;")
 		cursor.execute("DROP TABLE IF EXISTS contacts;")
 		retString += "Finished dropping table (if existed)\n"
-		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, firstName VARCHAR(50), lastName VARCHAR(50), ref_id INT, phoneNum VARCHAR(16), birthDate VARCHAR(50), address VARCHAR(50));")
+		cursor.execute("CREATE TABLE contacts (id serial PRIMARY KEY AUTO_INCREMENT, firstName VARCHAR(50), lastName VARCHAR(50), ref_id INT, phoneNum VARCHAR(16), birthDate VARCHAR(50), address VARCHAR(50));")
 		retString += "Finished creating table.\n"
 
 		cleanup(connection, cursor)
