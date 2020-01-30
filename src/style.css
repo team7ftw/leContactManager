@@ -1,45 +1,125 @@
-#top-bar {
-    width: 100%;
-    height: 0.25rem;
-    background: #FF8665;
+html,
+body {
+  height: 100%;
 }
 
 body {
-    background: #262130;
-}
+  background-color: #262130;
+  color: #FFFFFF;
+  margin: 100;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px
 
+}
 a {
-    color: #FF8665;
+  color: #FF8665;
+}
+a:hover {
+  text-decoration: none;
+  color: rgb(255, 167, 142);
 }
 
-a:hover {
-    text-decoration: none;
-    color: rgb(255, 167, 142);
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
+
+/* header container */
+
+.header {
+  background-color: #262130;
+  color: #FF8665;
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.header-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.header-control :focus {
+  z-index: 2;
+}
+
+/* form container */
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* button container */
+
+.button-outline-fire {
+  border-color: #FF8665;
+  color: #FF8665;
+  background-color: #262130;
+}
+
+.button-outline-fire:hover {
+  background-color: #FF8665;
+  transition: 0.3s;
+}
+
+.center {
+  margin: auto;
+  width: 25%;
+  padding: 150px 0;
+}
+
+/* The navbar container */
 
 .nav-link {
-    color: #FFFFFF !important;
-  }
-  
+  overflow: hidden;
+  background-color: #262130;
+}
+
 .nav-link:hover {
-    color: #FF8665 !important;
-    transition: 0.3s;
+  color: #FF8665 !important;
+  transition: 0.3s;
 }
 
 .nav-link.active {
-    color: #2D3338 !important;
-    background-color: #FF8665 !important;
+  color: #2D3338 !important;
+  background-color: #FF8665 !important;
 } 
 
-.btn-outline-fire {
-    border-color: #FF8665;
-    color: #FF8665;
-}
-
-.btn-outline-fire:hover {
-    background-color: #FF8665;
-}
-
+/* form containers */
 .form-dark, .form-dark:focus {
     background: #16131d;
     border-style: none;
@@ -48,4 +128,12 @@ a:hover {
 
 .form-dark:focus {
     border: 1px solid #FF8665;
+}
+
+/* footer container */
+
+.footer {
+  background-color: #FF8665;
+  text-align: center;
+  padding: 10px;
 }
