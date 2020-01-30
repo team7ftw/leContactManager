@@ -108,7 +108,7 @@ def userFunctions():
 			query = "USE ContactManagerDB SELECT * FROM users WHERE username={} AND password={};".format(usrname, passwd)
 			cursor.execute(query)
 			all = cursor.fetchall()
-			
+			cleanup(connection, cursor)
 			
 			return jsonify(all) #"Success" #
 		
@@ -121,6 +121,8 @@ def userFunctions():
 			cursor.execute(query)
 			all = cursor.fetchall()
 			
+			cleanup(connection, cursor)
+			
 			return jsonify(all) #"Success" #
 			
 		elif request.method == 'POST':
@@ -131,6 +133,7 @@ def userFunctions():
 			
 			# DATABASE CALL TO UPDATE USER
 			query = "UPDATE dbo.UserLogin SET login_un={}, login_pw={} WHERE login_un={};".format(newUN, newPW, curUN)
+			cleanup(connection, cursor)
 			return "Success"
 		
 		elif request.method == 'DELETE':
@@ -139,6 +142,7 @@ def userFunctions():
 			
 			#DATABASE CALL TO REMOVE USER
 			query = "DELETE FROM dbo.UserLogin WHERE login_un={} AND login_pw={};".format(usrname, passwd)
+			cleanup(connection, cursor)
 			return "Success"
 		
 		else:
