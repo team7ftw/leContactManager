@@ -110,7 +110,10 @@ def userFunctions():
 				# DATABASE CALL TO RETREVIVE
 				query = "SELECT * FROM users WHERE login_un='{}' AND login_pw='{}';".format(usrname, passwd)
 				cursor.execute(query)
-				all = cursor.fetchall()				
+				all = cursor.fetchall()	
+
+				cleanup(connection, cursor)
+				
 				return jsonify(all) #"Success" #
 			
 			elif request.method == 'PUT':
@@ -120,6 +123,8 @@ def userFunctions():
 				# DATABASE CALL TO INSERT NEW USER
 				query = "INSERT INTO users (login_un, login_pw) VALUES (%s, %s);", (usrname, passwd)
 				cursor.execute(query)
+				
+				cleanup(connection, cursor)
 				
 				return jsonify({"result": "Success"}) #
 				
