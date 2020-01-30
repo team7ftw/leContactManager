@@ -136,6 +136,7 @@ def userFunctions():
 				
 				# DATABASE CALL TO UPDATE USER
 				query = "UPDATE users SET login_un='{}', login_pw='{}' WHERE login_un='{}';".format(newUN, newPW, curUN)
+				cursor.execute(query)
 				
 				cleanup(connection, cursor)
 				
@@ -147,6 +148,7 @@ def userFunctions():
 				
 				#DATABASE CALL TO REMOVE USER
 				query = "DELETE FROM users WHERE login_un='{}' AND login_pw='{}';".format(usrname, passwd)
+				cursor.execute(query)
 				
 				cleanup(connection, cursor)
 				
