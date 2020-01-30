@@ -120,9 +120,8 @@ def userFunctions():
 				# DATABASE CALL TO INSERT NEW USER
 				query = "INSERT INTO users (login_un, login_pw) VALUES ('{0}', '{1}');".format(usrname, passwd)
 				cursor.execute(query)
-				all = cursor.fetchall()
 				
-				return jsonify(all) #"Success" #
+				return jsonify({"result": "Success"}) #
 				
 			elif request.method == 'POST':
 				curUn = request.args.get('curUN', '')
