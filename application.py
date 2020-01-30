@@ -137,6 +137,8 @@ def userFunctions():
 				# DATABASE CALL TO UPDATE USER
 				query = "UPDATE users SET login_un='{}', login_pw='{}' WHERE login_un='{}';".format(newUN, newPW, curUN)
 				
+				cleanup(connection, cursor)
+				
 				return josnify({"result": "Success"})
 			
 			elif request.method == 'DELETE':
@@ -145,6 +147,8 @@ def userFunctions():
 				
 				#DATABASE CALL TO REMOVE USER
 				query = "DELETE FROM users WHERE login_un='{}' AND login_pw='{}';".format(usrname, passwd)
+				
+				cleanup(connection, cursor)
 				
 				return jsonify({"result": "Success"})
 			else:
