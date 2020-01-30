@@ -108,7 +108,7 @@ def userFunctions():
 				#cursor.execute("USE ContactManagerDB INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 				
 				# DATABASE CALL TO RETREVIVE
-				query = "SELECT * FROM users WHERE lgoin_un='{}' AND login_pw='{}';".format(usrname, passwd)
+				query = "SELECT * FROM users WHERE login_un='{}' AND login_pw='{}';".format(usrname, passwd)
 				cursor.execute(query)
 				all = cursor.fetchall()				
 				return jsonify(all) #"Success" #
