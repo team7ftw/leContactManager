@@ -10,7 +10,7 @@
 
         <title>Le Contact Manager</title>
     </head>
-    <body class="bg-dark">
+    <body class="text-light">
         <noscript>You need JavaScript to use this app!</noscript>
             <!-- Visual element -->
             <div id="top-bar"></div>
@@ -25,20 +25,72 @@
 
                     <div class="collapse navbar-collapse" id="navMenu">
                         <ul class="navbar-nav nav-pills ml-auto">
-                            <li class="nav-link px-2 ml-2 active">
+                            <a class="nav-link px-2 ml-2 active" href="#">
                                 Contacts
-                            </li>
-                            <li class="nav-link px-2 ml-2">
+                            </a>
+                            <a class="nav-link px-2 ml-2" href="#">
                                 New
-                            </li>
-                            <li class="nav-link px-2 ml-2">
+                            </a>
+                            <a class="nav-link px-2 ml-2" href="#">
                                 Account
-                            </li>
+                            </a>
                         </ul>
                     </div>
                 </nav>
 
                 <main class="mt-4">
+                    <h2 class="mb-4">All Contacts</h2>
+
+                    <!-- Demo Table -->
+                    <table class="table table-striped text-light table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Rhodes</td>
+                                <td>Candace</td>
+                                <td>407 555 5555</td>
+                                <td><a href="#">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Bernard</td>
+                                <td>Lorence</td>
+                                <td>407 555 5555</td>
+                                <td><a href="#">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Cortez</td>
+                                <td>Alicia</td>
+                                <td>407 555 5555</td>
+                                <td><a href="#">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>Cortez</td>
+                                <td>Alicia</td>
+                                <td>407 555 5555</td>
+                                <td><a href="#">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>Cortez</td>
+                                <td>Alicia</td>
+                                <td>407 555 5555</td>
+                                <td><a href="#">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </main>
             </div>
 

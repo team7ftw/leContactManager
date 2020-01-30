@@ -3,3 +3,39 @@
     height: 0.25rem;
     background: #FF8665;
 }
+
+body {
+    background: #262130;
+}
+
+a {
+    color: #FF8665;
+}
+
+a:hover {
+    text-decoration: none;
+    color: rgb(255, 167, 142);
+}
+
+.nav-link {
+    color: #FFFFFF;
+  }
+  
+  .nav-link:hover {
+    color: #FF8665 !important;
+    transition: 0.3s;
+  }
+  
+  .nav-link.active {
+    color: #2D3338 !important;
+    background-color: #FF8665 !important;
+  } 
+  
+  .btn-outline-fire {
+    border-color: #FF8665;
+    color: #FF8665;
+  }
+  
+  .btn-outline-fire:hover {
+    background-color: #FF8665;
+  }
