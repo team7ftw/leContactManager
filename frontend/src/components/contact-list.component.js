@@ -44,6 +44,9 @@ class ContactList extends Component {
                         <td>Rhodes</td>
                         <td>Candace</td>
                         <td>407 555 5555</td>
+                        <td>
+                        <svg class="bi bi-gear" width="1em" height="1em" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clip-rule="evenodd"/></svg>
+                        </td>
                         <td><a href="#">Edit</a></td>
                     </tr>
                     <tr>
@@ -62,7 +65,6 @@ class ContactList extends Component {
                     </tr>
                 </tbody>
             </table>
-            <p className="muted">This table just for design reference purposes it's not accessing anything yet.</p>
         </div>
         );
     }
