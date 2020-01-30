@@ -118,7 +118,7 @@ def userFunctions():
 				passwd = request.args.get('passwd', '')
 				
 				# DATABASE CALL TO INSERT NEW USER
-				query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ('{0}', '{1}');".format(usrname, passwd)
+				query = "INSERT INTO users (login_un, login_pw) VALUES ('{0}', '{1}');".format(usrname, passwd)
 				cursor.execute(query)
 				all = cursor.fetchall()
 				
