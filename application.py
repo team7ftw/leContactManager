@@ -121,7 +121,7 @@ def userFunctions():
 				passwd = request.args.get('passwd', '')
 				
 				# DATABASE CALL TO INSERT NEW USER
-				query = "INSERT INTO users (login_un, login_pw) VALUES (%s, %s);", (usrname, passwd)
+				query = "INSERT INTO users (login_un, login_pw) VALUES (%s, %s);" % (usrname, passwd)
 				cursor.execute(query)
 				
 				cleanup(connection, cursor)
