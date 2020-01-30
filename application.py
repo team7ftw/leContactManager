@@ -64,7 +64,7 @@ def newContactsTable():
 		tb = traceback.format_exc()
 		return "Return string:" + retString + "Exception:\n" + tb
 
-@app.route('/addtotable', methods=['GET'])
+@app.route('/addtotable/users', methods=['POST'])
 def addToTable():
 	retString = "\n"
 	try:
@@ -85,7 +85,7 @@ def addToTable():
 		tb = traceback.format_exc()
 		return "Return string:" + retString + "Exception:\n" + tb
 
-@app.route('/readtable', methods=['GET'])
+@app.route('/readtable/users', methods=['GET'])
 def readTable():
 	retString = "\n"
 	try:
