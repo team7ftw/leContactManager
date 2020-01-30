@@ -39,3 +39,13 @@ a:hover {
 .btn-outline-fire:hover {
     background-color: #FF8665;
 }
+
+.form-dark, .form-dark:focus {
+    background: #16131d;
+    border-style: none;
+    box-shadow: none;
+}
+
+.form-dark:focus {
+    border: 1px solid #FF8665;
+}
