@@ -32,7 +32,7 @@ def newTable():
 		cursor.execute("USE ContactManagerDB;")
 		cursor.execute("DROP TABLE IF EXISTS users;")
 		retString += "Finished dropping table (if existed)\n"
-		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(50));")
+		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50), login_pw VARCHAR(50));")
 		retString += "Finished creating table.\n"
 
 		cleanup(connection, cursor)
@@ -53,7 +53,7 @@ def addToTable():
 		usrname = request.args.get('usrname', '')
 		passwd = request.args.get('passwd', '')
 		cursor.execute("USE ContactManagerDB")
-		cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
+		cursor.execute("INSERT INTO users (login_un, login_pw) VALUES (%s, %s);", (usrname, passwd))
 		retString += "Inserted a new row: (" + usrname + ", " + passwd + ")\n"
 
 		cleanup(connection, cursor)
@@ -108,7 +108,7 @@ def userFunctions():
 				#cursor.execute("USE ContactManagerDB INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 				
 				# DATABASE CALL TO RETREVIVE
-				query = "SELECT * FROM users WHERE username='{}' AND password='{}';".format(usrname, passwd)
+				query = "SELECT * FROM users WHERE lgoin_un='{}' AND login_pw='{}';".format(usrname, passwd)
 				cursor.execute(query)
 				all = cursor.fetchall()				
 				return jsonify(all) #"Success" #
@@ -118,7 +118,7 @@ def userFunctions():
 				passwd = request.args.get('passwd', '')
 				
 				# DATABASE CALL TO INSERT NEW USER
-				query = "INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
+				query = "INSERT INTO dbo.UserLogin (login_un, login_pw) VALUES ('{0}', '{1}');".format(usrname, passwd)
 				cursor.execute(query)
 				all = cursor.fetchall()
 				
