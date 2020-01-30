@@ -21,25 +21,39 @@
 
 <body class="text-center">
 
+<div class="header">
+	<h1 class="mt-5 mb-3">Le Contact Manager</h1>
+</div>
 
 	<!-- Login/Register Components -->
 	<form class="login-block">
+	<div class="center">
 	    <div class="container">
 			<div class="row">
 				<div class="col-md-4 login-sec">
 
-
-					<h1 class="mt-5 mb-3 text-muted">Le Contact Manager</h1>
 				    <h2 class="mt-5 mb-3 text-muted">Please sign in</h2>
 
-				    <!-- TODO: handle login errors here-->
+				    <!-- TODO: complete handle login errors here-->
+						<div class="alert alert-danger alert-dismissable" id="errorLoginAlert" role="alert" style="display: none;">
+							Connection error: cannot connect to host.
+							<button type="button" class="close" data-hide="alert">
+				  			</button>
+						</div>
 
+						<div class="alert alert-danger alert-dismissable" id="invalidLoginCreds" role="alert" style="display: none;">
+							Incorrect username or password.
+							<button type="button" class="close" data-hide="alert">
+				  			</button>
+						</div>
+
+					<!-- Username/Password blocks -->
 				    <label for="Username" class="sr-only">Username</label>
-				    <input id="username" type="text" class="form-control" placeholder=""required autofocus>
+				    <input id="username" type="text" class="form-control" placeholder="Username"required autofocus>
 
 				    <p>
 				    <label for="Password" class="sr-only">Password</label>
-				    <input id="password" type="password" class="form-control" placeholder=""required>
+				    <input id="password" type="password" class="form-control" placeholder="Password"required>
 					</p>
 
 				     <div class="checkbox mb-3">
@@ -48,15 +62,21 @@
 					    </label>
 					  </div>
 
-				    <button class="btn btn-lg btn-warning btn-block" type="submit">Sign in</button>
+ 					<!-- Sign-in/Register button -->
+ 					<!-- TODO: pipe events to respective pages -->
 
-						<!-- TODO: handle user registration ->
+				    <button class="button-outline-fire btn btn-lg btn-block" type="submit" onclick="submitLoginUser(event)">Sign in</button>
+
+					<button type="button" class="button-outline-fire btn btn-lg btn-block" onclick="registerUser(event)">Register</button>
+
+						<!-- TODO: process user registration ->
 						<!-- TODO: handle user registration-errors -->
 
 
 				</div>
 			</div>
 		</div>
+	</div>
 	</form>
 
     <!-- local JavaScript -->
