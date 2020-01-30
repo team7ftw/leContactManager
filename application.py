@@ -98,6 +98,8 @@ def userFunctions():
 		try:
 			connection = connect()
 			cursor = connection.cursor()
+			
+			cursor.execute("USE ContactManagerDB")
 
 			if request.method == 'GET':
 				usrname = request.args.get('usrname', '')
@@ -106,7 +108,7 @@ def userFunctions():
 				#cursor.execute("USE ContactManagerDB INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 				
 				# DATABASE CALL TO RETREVIVE
-				query = "USE ContactManagerDB SELECT * FROM users WHERE username={} AND password={};".format(usrname, passwd)
+				query = "SELECT * FROM users WHERE username='{}' AND password='{}';".format(usrname, passwd)
 				cursor.execute(query)
 				all = cursor.fetchall()				
 				return jsonify(all) #"Success" #
@@ -116,7 +118,7 @@ def userFunctions():
 				passwd = request.args.get('passwd', '')
 				
 				# DATABASE CALL TO INSERT NEW USER
-				query = "USE ContactManagerDB INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
+				query = "INSERT INTO dbo.UserLogin (username, password) VALUES ({0}, {1});".format(usrname, passwd)
 				cursor.execute(query)
 				all = cursor.fetchall()
 				
