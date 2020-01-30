@@ -135,24 +135,22 @@ def userFunctions():
 				newPW = request.args.get('newPW', '')
 				
 				# DATABASE CALL TO UPDATE USER
-				query = "UPDATE dbo.UserLogin SET login_un={}, login_pw={} WHERE login_un={};".format(newUN, newPW, curUN)
-				return "Success"
+				query = "UPDATE users SET login_un='{}', login_pw='{}' WHERE login_un='{}';".format(newUN, newPW, curUN)
+				
+				return josnify({"result": "Success"})
 			
 			elif request.method == 'DELETE':
 				usrname = request.args.get('usrname', '')
 				passwd = request.args.get('passwd', '')
 				
 				#DATABASE CALL TO REMOVE USER
-				query = "DELETE FROM dbo.UserLogin WHERE login_un={} AND login_pw={};".format(usrname, passwd)
-				return "Success"
-			
+				query = "DELETE FROM users WHERE login_un='{}' AND login_pw='{}';".format(usrname, passwd)
+				
+				return jsonify({"result": "Success"})
 			else:
-				return "None"
+				return jsonify({"result": "Success"})
 		except Exception as e:
-			return "Error: {}".format(e)
-		
-		else:
-			cleanup(connection, cursor)
+			return jsonify({"result": "Error", "Info": str(e)})
 			
 @app.route('/User/Contacts', methods = ['GET'])
 def getUserContacts():
