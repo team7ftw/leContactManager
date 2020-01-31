@@ -24,8 +24,8 @@ def test():
 
 @app.route("/redirect", methods=["GET"])
 		
-@app.route('/newtable/users', methods=['GET'])
-def newUsersTable():
+@app.route('/resetTables', methods=['GET'])
+def resetTables():
 	retString = "\n"
 	try:
 		connection = connect()
@@ -33,30 +33,13 @@ def newUsersTable():
 
 		cursor.execute("USE ContactManagerDB;")
 		cursor.execute("DROP TABLE IF EXISTS users;")
-		retString += "Finished dropping table (if existed)\n"
-		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50), login_pw VARCHAR(50));")
-		retString += "Finished creating table.\n"
-
-		cleanup(connection, cursor)
-		retString += "Done.\n"
-		return retString
-
-	except Exception as e:
-		tb = traceback.format_exc()
-		return "Return string:" + retString + "Exception:\n" + tb
-		
-@app.route('/newtable/contacts', methods=['GET'])
-def newContactsTable():
-	retString = "\n"
-	try:
-		connection = connect()
-		cursor = connection.cursor()
-
-		cursor.execute("USE ContactManagerDB;")
+		retString += "Finished dropping users table (if existed)\n"
 		cursor.execute("DROP TABLE IF EXISTS contacts;")
-		retString += "Finished dropping table (if existed)\n"
+		retString += "Finished dropping contacts table (if existed)\n"
+		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50), login_pw VARCHAR(50));")
+		retString += "Created new users table.\n"
 		cursor.execute("CREATE TABLE contacts (id serial PRIMARY KEY AUTO_INCREMENT, firstName VARCHAR(50), lastName VARCHAR(50), ref_id INT, phoneNum VARCHAR(16), birthDate VARCHAR(50), address VARCHAR(50));")
-		retString += "Finished creating table.\n"
+		retString += "Created new contacts table.\n"
 
 		cleanup(connection, cursor)
 		retString += "Done.\n"
@@ -66,7 +49,7 @@ def newContactsTable():
 		tb = traceback.format_exc()
 		return "Return string:" + retString + "Exception:\n" + tb
 
-@app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
+@app.route('/users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
 	
 		try:
