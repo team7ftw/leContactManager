@@ -95,7 +95,7 @@ def userFunctions():
 				
 				cleanup(connection, cursor)
 				
-				return josnify({"result": "Success"})
+				return jsonify({"result": "Success"})
 			
 			elif request.method == 'DELETE':
 				usrname = request.args.get('usrname', '')
