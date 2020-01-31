@@ -21,6 +21,8 @@ app = Flask(__name__)
 def test():
 	if request.method == 'GET':
 		return jsonify({"resposne": "Get Request Called"})
+
+@app.route("/redirect", methods=["GET"])
 		
 @app.route('/newtable/users', methods=['GET'])
 def newUsersTable():
@@ -64,55 +66,6 @@ def newContactsTable():
 		tb = traceback.format_exc()
 		return "Return string:" + retString + "Exception:\n" + tb
 
-@app.route('/addtotable/users', methods=['POST'])
-def addToTable():
-	retString = "\n"
-	try:
-		connection = connect()
-		cursor = connection.cursor()
-
-		usrname = request.args.get('usrname', '')
-		passwd = request.args.get('passwd', '')
-		cursor.execute("USE ContactManagerDB")
-		cursor.execute("INSERT INTO users (login_un, login_pw) VALUES (%s, %s);", (usrname, passwd))
-		retString += "Inserted a new row: (" + usrname + ", " + passwd + ")\n"
-
-		cleanup(connection, cursor)
-		retString += "Done.\n"
-		return retString
-
-	except Exception as e:
-		tb = traceback.format_exc()
-		return "Return string:" + retString + "Exception:\n" + tb
-
-@app.route('/readtable/users', methods=['GET'])
-def readTable():
-	retString = "\n"
-	try:
-		connection = connect()
-		cursor = connection.cursor()
-		
-		usrname = request.args.get('usrname', '')
-		passwd = request.args.get('passwd', '')
-		cursor.execute("USE ContactManagerDB")
-		cursor.execute("SELECT * FROM users;")
-		rows = cursor.fetchall()
-
-		retString += "Read " + str(cursor.rowcount) + " row(s) of data.\n"
-		# Print all rows
-		for row in rows:
-			retString += "row = " + str(row[0]) + ": " +  str(row[1]) + " " + str(row[2]) + "\n"
-
-		
-		cleanup(connection, cursor)
-		retString += "Done.\n"
-		return retString
-
-	except Exception as e:
-		tb = traceback.format_exc()
-		return "Return string:" + retString + "Exception:\n" + tb
-	
-
 @app.route('/Users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
 	
@@ -125,8 +78,6 @@ def userFunctions():
 			if request.method == 'GET':
 				usrname = request.args.get('usrname', '')
 				passwd = request.args.get('passwd', '')
-				
-				#cursor.execute("USE ContactManagerDB INSERT INTO users (username, password) VALUES (%s, %s);", (usrname, passwd))
 				
 				# DATABASE CALL TO RETREVIVE
 				query = "SELECT * FROM users WHERE login_un='{}' AND login_pw='{}';".format(usrname, passwd)
