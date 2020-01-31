@@ -109,58 +109,78 @@ def userFunctions():
 				
 				return jsonify({"result": "Success"})
 			else:
+				cleanup(connection, cursor)
 				return jsonify({"result": "Success"})
+				
 		except Exception as e:
 			return jsonify({"result": "Error", "Info": str(e)})
 			
 @app.route('/User/Contacts', methods = ['GET'])
 def getUserContacts():
-	if request.method == 'GET':
-		user = request.args.parse('usrname', '')
+	try:
+		connection = connect()
+		cursor = connection.cursor()
+			
+		cursor.execute("USE ContactManagerDB")
 		
-		# DATABASE CALL TO GET ALL CONTACTS THAT BELONG TO USER
+		if request.method == 'GET':
+			usrID = request.args.parse('usrID', '')
+			
+			# DATABASE CALL TO GET ALL CONTACTS THAT BELONG TO USE
+			query = "SELECT * FROM contacts WHERE ref_id={}".format(usrID)
+			cursor.execute(query)
+			
+			all = cursor.fetchall()
+			
+			cleanup(connection, cursor)
+			
+			return jsonify(all)
 		
-		return jsonify({'contact': {'No Contacts': {'phone': '(xxx)xxx-xxxx'}}})
-	
-	else:
-		return "None"
-		
+		else:
+			return "None"
+	except Exception as e:
+		return jsonify({"Error" : str(e)})
+			
 
 @app.route('/User/Contacts/Contact', methods = ['GET', 'PUT', 'POST', 'DELETE'])
 def userContact():
-	usrname = request.args.get('usrname', '')
-	passwd = request.args.get('passwd', '')
-	contactID = request.args.get('contactID', '')
-	
-	if request.method == 'GET':
+	try:
+		usrname = request.args.get('usrname', '')
+		passwd = request.args.get('passwd', '')
+		contactID = request.args.get('contactID', '')
+		
+		if request.method == 'GET':
 
-		# DATABASE TO GET CONTACT DATA
-		
-		return jsonify({'contact': {'No Contacts': {'phone': '(xxx)xxx-xxxx'}}})
-		
-	elif request.method == 'PUT':
-		phoneNum = request.args.get()
-		address  = request.args.get()
-		# OTHER DATA
-		
-		# DATABASE CALL TO INSERT NEW CONTACT
-		
-		return "Success"
-		
-	elif request.method == 'POST':
-		phoneNum = request.args.get()
-		address  = request.args.get()
-		# OTHER DATA
-		
-		# DATABASE CALL TO UPDATE CONTACT
-		
-		return "Success"
-		
-	elif request.method == 'DELETE':
-		# DATABASE CALL TO REMOVE CONTACT
-		return "Success"
-		
+			# DATABASE TO GET CONTACT DATA
+			
+			return jsonify({'contact': {'No Contacts': {'phone': '(xxx)xxx-xxxx'}}})
+			
+		elif request.method == 'PUT':
+			phoneNum = request.args.get()
+			address  = request.args.get()
+			# OTHER DATA
+			
+			# DATABASE CALL TO INSERT NEW CONTACT
+			
+			return "Success"
+			
+		elif request.method == 'POST':
+			phoneNum = request.args.get()
+			address  = request.args.get()
+			# OTHER DATA
+			
+			# DATABASE CALL TO UPDATE CONTACT
+			
+			return "Success"
+			
+		elif request.method == 'DELETE':
+			# DATABASE CALL TO REMOVE CONTACT
+			return "Success"
 	
+	except Exception as e:
+		return jsonify({"Error": str(e)})
+			
+		
 def connect():
 	connection = mysql.connector.connect(user="admins@cop4331group7dbserver", password="#cop4331", host="cop4331group7dbserver.mysql.database.azure.com", port=3306)
 	return connection
