@@ -17,14 +17,7 @@ app = Flask(__name__)
 
 
 # https://m.youtube.com/watch?v=dkgRxBw_4no
-@app.route('/test', methods=['GET'])
-def test():
-	if request.method == 'GET':
-		return jsonify({"resposne": "Get Request Called"})
-
-@app.route("/redirect", methods=["GET"])
-		
-@app.route('/resetTables', methods=['GET'])
+@app.route('/dev/resetTables', methods=['GET'])
 def resetTables():
 	retString = "\n"
 	try:
@@ -48,6 +41,57 @@ def resetTables():
 	except Exception as e:
 		tb = traceback.format_exc()
 		return "Return string:" + retString + "Exception:\n" + tb
+
+@app.route('/dev/showtable/users', methods=['GET'])
+def showUsersTable():
+	try:
+		retString = "\n"
+		connection = connect()
+		cursor = connection.cursor()
+
+		cursor.execute("USE ContactManagerDB;")
+		cursor.execute("SELECT * FROM USERS;")
+		all = cursor.fetchall()
+		retString += "Read " + str(cursor.rowcount) + " row(s) of data.\n"
+		for row in all:
+			retString += "row ="
+			for col in row:
+				retString += " " + str(col)
+			retString += "\n"
+
+		cleanup(connection, cursor)
+		retString += "Done.\n"
+		return retString
+
+	except Exception as e:
+		tb = traceback.format_exc()
+		return "Exception:\n" + tb
+
+@app.route('/dev/showtable/contacts', methods=['GET'])
+def showContactsTable():
+	try:
+		retString = "\n"
+		connection = connect()
+		cursor = connection.cursor()
+
+		cursor.execute("USE ContactManagerDB;")
+		cursor.execute("SELECT * FROM USERS;")
+		all = cursor.fetchall()
+		retString += "Read " + str(cursor.rowcount) + " row(s) of data.\n"
+		for row in all:
+			retString += "row ="
+			for col in row:
+				retString += " " + str(col)
+			retString += "\n"
+
+
+		cleanup(connection, cursor)
+		retString += "Done.\n"
+		return retString
+
+	except Exception as e:
+		tb = traceback.format_exc()
+		return "Exception:\n" + tb
 
 @app.route('/users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
 def userFunctions():
@@ -115,7 +159,7 @@ def userFunctions():
 		except Exception as e:
 			return jsonify({"result": "Error", "Info": str(e)})
 			
-@app.route('/User/Contacts', methods = ['GET'])
+@app.route('/user/contacts', methods = ['GET'])
 def getUserContacts():
 	try:
 		connection = connect()
@@ -142,7 +186,7 @@ def getUserContacts():
 		return jsonify({"Error" : str(e)})
 			
 
-@app.route('/User/Contacts/Contact', methods = ['GET', 'PUT', 'POST', 'DELETE'])
+@app.route('/user/contacts/contact', methods = ['GET', 'PUT', 'POST', 'DELETE'])
 def userContact():
 	try:
 		connection = connect()
@@ -194,7 +238,7 @@ def userContact():
 			
 			
 			# DATABASE CALL TO UPDATE CONTACT
-			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNum='{}', address='{}', birthDate='{}' WHERE fk_ref_id={} AND cID={};"format(fName, lName, phoneNum, address, bday, uID, cID)
+			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNum='{}', address='{}', birthDate='{}' WHERE fk_ref_id={} AND cID={};".format(fName, lName, phoneNum, address, bday, uID, cID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
