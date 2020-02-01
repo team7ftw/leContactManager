@@ -124,10 +124,10 @@ def getUserContacts():
 		cursor.execute("USE ContactManagerDB")
 		
 		if request.method == 'GET':
-			usrID = request.args.parse('usrID', '')
+			usrID = request.args.parse('uID', '')
 			
 			# DATABASE CALL TO GET ALL CONTACTS THAT BELONG TO USE
-			query = "SELECT * FROM contacts WHERE ref_id={}".format(usrID)
+			query = "SELECT cID, firstName, lastName FROM contacts WHERE ref_id={}".format(usrID)
 			cursor.execute(query)
 			
 			all = cursor.fetchall()
@@ -145,37 +145,77 @@ def getUserContacts():
 @app.route('/User/Contacts/Contact', methods = ['GET', 'PUT', 'POST', 'DELETE'])
 def userContact():
 	try:
-		usrname = request.args.get('usrname', '')
-		passwd = request.args.get('passwd', '')
-		contactID = request.args.get('contactID', '')
+		connection = connect()
+		cursor = connection.cursor()
+			
+			cursor.execute("USE ContactManagerDB")
+
 		
 		if request.method == 'GET':
-
-			# DATABASE TO GET CONTACT DATA
+			uID = request.args.get('uID', '')
+			cID = request.args.get('cID', '')
 			
-			return jsonify({'contact': {'No Contacts': {'phone': '(xxx)xxx-xxxx'}}})
+			# DATABASE TO GET CONTACT DATA
+			query = "SELECT * FROM contacts WHERE ref_id={} AND cID={}".format(uID, cID) 
+			cursor.execute(query)
+			all = cursor.fetchall()
+			
+			cleanup(connection, cursor)
+			
+			return jsonify(all)
 			
 		elif request.method == 'PUT':
-			phoneNum = request.args.get()
-			address  = request.args.get()
-			# OTHER DATA
+			json_data = request.get_json(force=True)
+			
+			uID = json_data['uID']
+			fName = json_data['fName']
+			lName = json_data['lName']
+			phoneNum = json_data['phoneNum']
+			address  = json_data['address']
+			bDay = json_data['bday']
 			
 			# DATABASE CALL TO INSERT NEW CONTACT
+			query = "INSERT INTO contacts (firstName, lastName, phoneNum, address, birthDate, fk_ref_id) VALUES ('{}', '{}', '{}', '{}', '{}', {});".format(fName, lName, phoneNum, address, bday, uID)
+			cursor.execute(query)
+			cleanup(connection, cursor)
 			
-			return "Success"
+			return jsonify({"result": "Success"})
 			
 		elif request.method == 'POST':
-			phoneNum = request.args.get()
-			address  = request.args.get()
-			# OTHER DATA
+			json_data = request.get_json(force=True)
+			
+			uID = json_data['uID']
+			cID = json_data['cID']
+			fName = json_data['fName']
+			lName = json_data['lName']
+			phoneNum = json_data['phoneNum']
+			address  = json_data['address']
+			bDay = json_data['bday']
+			
 			
 			# DATABASE CALL TO UPDATE CONTACT
+			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNum='{}', address='{}', birthDate='{}' WHERE fk_ref_id={} AND cID={};"format(fName, lName, phoneNum, address, bday, uID, cID)
+			cursor.execute(query)
+			cleanup(connection, cursor)
 			
-			return "Success"
+			return jsonify({"result": "Success"})
 			
 		elif request.method == 'DELETE':
+			json_data = request.get_json(force=True)
+			
+			uID = json_data['uID']
+			cID = json_data['cID']
+			
 			# DATABASE CALL TO REMOVE CONTACT
-			return "Success"
+			query = "DELETE FROM contacts WHERE cID={} AND fk_ref_id={};".format(cID, uID)
+			cursor.execute(query)
+			cleanup(connection, cursor)
+				
+			return jsonify({"result": "Success"})
+			
+		else:
+			cleanup(connection,cursor)
+			return jsonify({"Error": "Unsupported command '{}'.".format(request.method)})
 	
 	except Exception as e:
 		return jsonify({"Error": str(e)})
