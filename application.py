@@ -22,11 +22,11 @@ def resetTables():
 		cursor = connection.cursor()
 
 		cursor.execute("USE ContactManagerDB;")
-		cursor.execute("DROP TABLE IF EXISTS users;")
-		retString += "Finished dropping users table (if existed)\n"
 		cursor.execute("DROP TABLE IF EXISTS contacts;")
 		retString += "Finished dropping contacts table (if existed)\n"
-		cursor.execute("CREATE TABLE users (userID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50), login_pw VARCHAR(50));")
+		cursor.execute("DROP TABLE IF EXISTS users;")
+		retString += "Finished dropping users table (if existed)\n"
+		cursor.execute("CREATE TABLE users (userID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50) UNIQUE, login_pw VARCHAR(50));")
 		retString += "Created new users table.\n"
 		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(10), birthday VARCHAR(6), address VARCHAR(50), CONSTRAINT  fk_ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
 		retString += "Created new contacts table.\n"
@@ -111,7 +111,7 @@ def userFunctions():
 
 				cleanup(connection, cursor)
 				
-				return jsonify(all) #"Success" #
+				return jsonify(all)
 			
 			elif request.method == 'PUT':
 				json_input = request.get_json(force=True)
@@ -124,7 +124,7 @@ def userFunctions():
 				
 				cleanup(connection, cursor)
 				
-				return jsonify({"result": "Success"}) #
+				return jsonify({"result": "Success"})
 				
 			elif request.method == 'POST':
 				json_input = request.get_json(force=True)
@@ -219,7 +219,7 @@ def userContact():
 			birthday = json_data['birthday']
 			
 			# DATABASE CALL TO INSERT NEW CONTACT
-			query = "INSERT INTO contacts (firstName, lastName, phoneNumber, address, birthday, fk_ref_id) VALUES ('{}', '{}', '{}', '{}', '{}', {});".format(firstName, lastName, phoneNumber, address, birthday, userID)
+			query = "INSERT INTO contacts (ref_id, firstName, lastName, phoneNumber, address, birthday) VALUES ('{}', '{}', '{}', '{}', '{}', {});".format(firstName, lastName, phoneNumber, address, birthday, userID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
