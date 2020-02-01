@@ -148,7 +148,7 @@ def userContact():
 		connection = connect()
 		cursor = connection.cursor()
 			
-			cursor.execute("USE ContactManagerDB")
+		cursor.execute("USE ContactManagerDB")
 
 		
 		if request.method == 'GET':
