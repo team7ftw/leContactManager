@@ -8,16 +8,13 @@ import traceback
 import mysql.connector
 from mysql.connector import errorcode
 
-#conn = psycopg2.connect(database=database, user=username, password=password, host=server, port="1433")
-#cursor = conn.cursor()
-
 	
 app = Flask(__name__)
 #api = Api(app)
 
 
 # https://m.youtube.com/watch?v=dkgRxBw_4no
-@app.route('/dev/resetTables', methods=['GET'])
+@app.route('/dev/resettables', methods=['GET'])
 def resetTables():
 	retString = "\n"
 	try:
@@ -29,9 +26,9 @@ def resetTables():
 		retString += "Finished dropping users table (if existed)\n"
 		cursor.execute("DROP TABLE IF EXISTS contacts;")
 		retString += "Finished dropping contacts table (if existed)\n"
-		cursor.execute("CREATE TABLE users (uID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50), login_pw VARCHAR(50));")
+		cursor.execute("CREATE TABLE users (userID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50), login_pw VARCHAR(50));")
 		retString += "Created new users table.\n"
-		cursor.execute("CREATE TABLE contacts (cID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNum VARCHAR(16), birthDate VARCHAR(50), address VARCHAR(50), CONSTRAINT  fk_ref_id FOREIGN KEY (ref_id) REFERENCES users (uID));")
+		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(10), birthday VARCHAR(6), address VARCHAR(50), CONSTRAINT  fk_ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
 		retString += "Created new contacts table.\n"
 
 		cleanup(connection, cursor)
@@ -103,11 +100,12 @@ def userFunctions():
 			cursor.execute("USE ContactManagerDB")
 
 			if request.method == 'GET':
-				usrname = request.args.get('usrname', '')
-				passwd = request.args.get('passwd', '')
+				json_input = request.get_json(force=True)
+				username = json_input['username']
+				password = json_input['password']
 				
 				# DATABASE CALL TO RETREVIVE
-				query = "SELECT * FROM users WHERE login_un='{}' AND login_pw='{}';".format(usrname, passwd)
+				query = "SELECT * FROM users WHERE login_un='{}' AND login_pw='{}';".format(username, password)
 				cursor.execute(query)
 				all = cursor.fetchall()	
 
@@ -116,11 +114,12 @@ def userFunctions():
 				return jsonify(all) #"Success" #
 			
 			elif request.method == 'PUT':
-				usrname = request.args.get('usrname', '')
-				passwd = request.args.get('passwd', '')
+				json_input = request.get_json(force=True)
+				username = json_input['username']
+				password = json_input['password']
 				
 				# DATABASE CALL TO INSERT NEW USER
-				query = "INSERT INTO users (login_un, login_pw) VALUES ('{}', '{}');".format(usrname, passwd)
+				query = "INSERT INTO users (login_un, login_pw) VALUES ('{}', '{}');".format(username, password)
 				cursor.execute(query)
 				
 				cleanup(connection, cursor)
@@ -128,13 +127,13 @@ def userFunctions():
 				return jsonify({"result": "Success"}) #
 				
 			elif request.method == 'POST':
-				curUn = request.args.get('curUN', '')
-				
-				newUN = request.args.get('newUN', '')
-				newPW = request.args.get('newPW', '')
+				json_input = request.get_json(force=True)
+				currentUsername = json_input['currentUsername']
+				newPassword = json_input['newUsername']
+				newPassword = json_input['newPassword']
 				
 				# DATABASE CALL TO UPDATE USER
-				query = "UPDATE users SET login_un='{}', login_pw='{}' WHERE login_un='{}';".format(newUN, newPW, curUN)
+				query = "UPDATE users SET login_un='{}', login_pw='{}' WHERE login_un='{}';".format(newUsername, newPassword, currentUsername)
 				cursor.execute(query)
 				
 				cleanup(connection, cursor)
@@ -142,11 +141,12 @@ def userFunctions():
 				return jsonify({"result": "Success"})
 			
 			elif request.method == 'DELETE':
-				usrname = request.args.get('usrname', '')
-				passwd = request.args.get('passwd', '')
+				json_input = request.get_json(force=True)
+				username = json_input['username']
+				password = json_input['password']
 				
 				#DATABASE CALL TO REMOVE USER
-				query = "DELETE FROM users WHERE login_un='{}' AND login_pw='{}';".format(usrname, passwd)
+				query = "DELETE FROM users WHERE login_un='{}' AND login_pw='{}';".format(username, password)
 				cursor.execute(query)
 				
 				cleanup(connection, cursor)
@@ -168,10 +168,10 @@ def getUserContacts():
 		cursor.execute("USE ContactManagerDB")
 		
 		if request.method == 'GET':
-			usrID = request.args.parse('uID', '')
+			usrID = request.args.parse('userID', '')
 			
 			# DATABASE CALL TO GET ALL CONTACTS THAT BELONG TO USE
-			query = "SELECT cID, firstName, lastName FROM contacts WHERE ref_id={}".format(usrID)
+			query = "SELECT contactID, firstName, lastName FROM contacts WHERE ref_id={}".format(usrID)
 			cursor.execute(query)
 			
 			all = cursor.fetchall()
@@ -196,11 +196,11 @@ def userContact():
 
 		
 		if request.method == 'GET':
-			uID = request.args.get('uID', '')
-			cID = request.args.get('cID', '')
+			userID = request.args.get('userID', '')
+			contactID = request.args.get('contactID', '')
 			
 			# DATABASE TO GET CONTACT DATA
-			query = "SELECT * FROM contacts WHERE ref_id={} AND cID={}".format(uID, cID) 
+			query = "SELECT * FROM contacts WHERE ref_id={} AND contactID={}".format(userID, contactID) 
 			cursor.execute(query)
 			all = cursor.fetchall()
 			
@@ -211,15 +211,15 @@ def userContact():
 		elif request.method == 'PUT':
 			json_data = request.get_json(force=True)
 			
-			uID = json_data['uID']
-			fName = json_data['fName']
-			lName = json_data['lName']
-			phoneNum = json_data['phoneNum']
+			userID = json_data['userID']
+			firstName = json_data['firstName']
+			lastName = json_data['lastName']
+			phoneNumber = json_data['phoneNumber']
 			address  = json_data['address']
-			bDay = json_data['bday']
+			birthday = json_data['birthday']
 			
 			# DATABASE CALL TO INSERT NEW CONTACT
-			query = "INSERT INTO contacts (firstName, lastName, phoneNum, address, birthDate, fk_ref_id) VALUES ('{}', '{}', '{}', '{}', '{}', {});".format(fName, lName, phoneNum, address, bday, uID)
+			query = "INSERT INTO contacts (firstName, lastName, phoneNumber, address, birthday, fk_ref_id) VALUES ('{}', '{}', '{}', '{}', '{}', {});".format(firstName, lastName, phoneNumber, address, birthday, userID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
@@ -228,17 +228,16 @@ def userContact():
 		elif request.method == 'POST':
 			json_data = request.get_json(force=True)
 			
-			uID = json_data['uID']
-			cID = json_data['cID']
-			fName = json_data['fName']
-			lName = json_data['lName']
-			phoneNum = json_data['phoneNum']
+			userID = json_data['userID']
+			firstName = json_data['firstName']
+			lastName = json_data['lastName']
+			phoneNumber = json_data['phoneNumber']
 			address  = json_data['address']
-			bDay = json_data['bday']
+			birthday = json_data['birthday']
 			
 			
 			# DATABASE CALL TO UPDATE CONTACT
-			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNum='{}', address='{}', birthDate='{}' WHERE fk_ref_id={} AND cID={};".format(fName, lName, phoneNum, address, bday, uID, cID)
+			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNumber='{}', address='{}', birthday='{}' WHERE fk_ref_id={} AND contactID={};".format(firstName, lastName, phoneNumber, address, birthday, userID, contactID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
@@ -247,11 +246,11 @@ def userContact():
 		elif request.method == 'DELETE':
 			json_data = request.get_json(force=True)
 			
-			uID = json_data['uID']
-			cID = json_data['cID']
+			userID = json_data['userID']
+			contactID = json_data['contactID']
 			
 			# DATABASE CALL TO REMOVE CONTACT
-			query = "DELETE FROM contacts WHERE cID={} AND fk_ref_id={};".format(cID, uID)
+			query = "DELETE FROM contacts WHERE contactID={} AND fk_ref_id={};".format(contactID, userID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 				
