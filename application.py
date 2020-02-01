@@ -147,9 +147,9 @@ def userFunctions():
 				password = json_input['password']
 				
 				#DATABASE CALL TO REMOVE USER
+				cursor.execute("DELETE * FROM contacts WHERE ref_id = " + str(userID))
 				query = "DELETE * FROM users WHERE login_un='{}' AND login_pw='{}';".format(username, password)
 				cursor.execute(query)
-				cursor.execute("DELETE * FROM contacts WHERE ref_id = " + str(userID))
 				
 				cleanup(connection, cursor)
 				
