@@ -36,9 +36,9 @@ def resetTables():
 		retString += "Finished dropping users table (if existed)\n"
 		cursor.execute("DROP TABLE IF EXISTS contacts;")
 		retString += "Finished dropping contacts table (if existed)\n"
-		cursor.execute("CREATE TABLE users (id serial PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50), login_pw VARCHAR(50));")
+		cursor.execute("CREATE TABLE users (uID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50), login_pw VARCHAR(50));")
 		retString += "Created new users table.\n"
-		cursor.execute("CREATE TABLE contacts (id serial PRIMARY KEY AUTO_INCREMENT, firstName VARCHAR(50), lastName VARCHAR(50), ref_id INT, phoneNum VARCHAR(16), birthDate VARCHAR(50), address VARCHAR(50));")
+		cursor.execute("CREATE TABLE contacts (cID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNum VARCHAR(16), birthDate VARCHAR(50), address VARCHAR(50), CONSTRAINT  fk_ref_id FOREIGN KEY (ref_id) REFERENCES users (uID));")
 		retString += "Created new contacts table.\n"
 
 		cleanup(connection, cursor)
