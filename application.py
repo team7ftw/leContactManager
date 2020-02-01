@@ -129,7 +129,7 @@ def userFunctions():
 			elif request.method == 'POST':
 				json_input = request.get_json(force=True)
 				currentUsername = json_input['currentUsername']
-				newPassword = json_input['newUsername']
+				newUsername = json_input['newUsername']
 				newPassword = json_input['newPassword']
 				
 				# DATABASE CALL TO UPDATE USER
@@ -168,7 +168,8 @@ def getUserContacts():
 		cursor.execute("USE ContactManagerDB")
 		
 		if request.method == 'GET':
-			usrID = request.args.parse('userID', '')
+			json_data = request.get_json(force=True)
+			usrID = json_data['userID']
 			
 			# DATABASE CALL TO GET ALL CONTACTS THAT BELONG TO USE
 			query = "SELECT contactID, firstName, lastName FROM contacts WHERE ref_id={}".format(usrID)
@@ -196,8 +197,9 @@ def userContact():
 
 		
 		if request.method == 'GET':
-			userID = request.args.get('userID', '')
-			contactID = request.args.get('contactID', '')
+			json_data = request.get_json(force=True)
+			userID = json_data['userID']
+			contactID = json_data['contactID']
 			
 			# DATABASE TO GET CONTACT DATA
 			query = "SELECT * FROM contacts WHERE ref_id={} AND contactID={}".format(userID, contactID) 
