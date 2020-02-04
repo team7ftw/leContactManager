@@ -153,6 +153,7 @@ code {
   outline: none;
   border: none;
   border-radius: 0;
-  border-bottom: 2px solid #fff;
-  padding-left: 0;
+  border-bottom: 1px solid #fff;
+  padding: 1.25rem 0;
+  margin-bottom: 1rem;
 }
