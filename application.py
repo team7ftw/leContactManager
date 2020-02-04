@@ -47,7 +47,7 @@ def showUsersTable():
 		cursor = connection.cursor()
 
 		cursor.execute("USE ContactManagerDB;")
-		cursor.execute("SELECT * FROM USERS;")
+		cursor.execute("SELECT * FROM users;")
 		all = cursor.fetchall()
 		retString += "Read " + str(cursor.rowcount) + " row(s) of data.\n"
 		for row in all:
@@ -72,7 +72,7 @@ def showContactsTable():
 		cursor = connection.cursor()
 
 		cursor.execute("USE ContactManagerDB;")
-		cursor.execute("SELECT * FROM USERS;")
+		cursor.execute("SELECT * FROM contacts;")
 		all = cursor.fetchall()
 		retString += "Read " + str(cursor.rowcount) + " row(s) of data.\n"
 		for row in all:
