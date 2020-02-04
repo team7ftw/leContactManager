@@ -3,7 +3,8 @@ const userData = {
     "userID": "2"
 }
 
-$(document).ready(populateTable);
+$(document).ready(populateTable());
+// window.onload(populateTable());
 
 function populateTable() {
     fetch('https://cop4331group7api.azurewebsites.net/user/contacts/get', {
