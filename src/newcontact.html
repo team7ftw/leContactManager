@@ -64,7 +64,7 @@
                         </div>
                         <div class="form-group">
                             <label for="address">Email</label>
-                            <input type="text" placeholder="email@example.com" class="form-control"></textarea>
+                            <input type="text" placeholder="email@example.com" id="address" class="form-control" />
                         </div>
                         <button class="btn btn-outline-fire mt-4" type="submit">Create</button>
                     </form>
@@ -81,19 +81,41 @@
 
             const form = document.getElementById('newContactForm');
 
+            // For development, user is hardcoded:
+            const userID = "2";
+
             form.onsubmit = e => {
                 // Prevent page refresh
                 e.preventDefault();
 
-                console.log('Testing API connection...');
+                const newUserData = {
+                    "userID": userID,
+                    "firstName": $("#firstName").val(),
+                    "lastName": $("#lastName").val(),
+                    "phoneNumber": $("#phone").val(),
+                    "address": $("#address").val(),
+                    "birthday": $("#birthday").val()
+                }
 
-                getData('https://cop4331group7api.azurewebsites.net/Users?usrname=Connor&passwd=no').then(res => {
-                        console.log('Server response: ' + res);
-                    });
+                $(".form-control").val('');
+
+                console.log(JSON.stringify(newUserData));
+
+                putData('https://cop4331group7api.azurewebsites.net/user/contacts/contact', newUserData).then(res => {
+                    console.log(res);
+                });
             }
 
             async function getData(url) {
                 const res = await fetch(url);
+                return await res.json();
+            }
+
+            async function putData(url, args) {
+                const res = await fetch(url, {
+                    method: 'PUT',
+                    body: JSON.stringify(args),
+                });
                 return await res.json();
             }
 
