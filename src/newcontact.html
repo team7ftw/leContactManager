@@ -108,6 +108,7 @@
                 console.log(JSON.stringify(newUserData));
 
                 putData('https://cop4331group7api.azurewebsites.net/user/contacts/contact', newUserData).then(res => {
+                    alert('User added!');
                     console.log(res);
                 });
             }
@@ -136,7 +137,7 @@
                 if(validDate.test(birthdateField.val()) === false) {
                     // Reset the field
                     birthdateField.val('');
-
+                    $(".invalid-feedback").remove();
                     birthdateField.addClass('is-invalid');
                     $("<div class='invalid-feedback'>Please use mmddyyyy</div>").insertAfter(birthdateField);
                     return false;
