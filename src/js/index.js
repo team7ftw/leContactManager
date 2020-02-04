@@ -45,7 +45,7 @@ function deleteContact(id, td) {
         body: JSON.stringify(body)
     }).then(res => {
         domrow.fadeOut(200, () => {
-            domrow.hide();
+            domrow.remove();
         });
     });
     
