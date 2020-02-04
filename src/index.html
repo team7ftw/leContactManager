@@ -84,7 +84,8 @@
                             $('<td>').text(i),
                             $('<td>').text(e[1]),
                             $('<td>').text(e[2]),
-                            $('<td>').html('<a href="#" onclick="gotoEdit(' + e[0] + ')">Edit</a>')
+                            $('<td>').html('<a href="#" onclick="gotoEdit(' + e[0] + ')">Edit</a>'),
+                            $('<td>').html('<a href="#" onclick="deleteContact(' + e[0] + ')">Delete</a>')
                         ).appendTo('#contact-table');
                     });
                 });
@@ -95,6 +96,22 @@
 
                 window.location = "edit.html";
             }
+
+            function deleteContact(id) {
+                const body = {
+                    'userID': 2,
+                    'contactID': id
+                }
+
+                fetch('https://cop4331group7api.azurewebsites.net/user/contacts/contact', {
+                    method: 'DELETE',
+                    body: JSON.stringify(body)
+                }).then(res => {
+                    location.refresh();
+                });
+                
+            }
+
         </script>
 
 
