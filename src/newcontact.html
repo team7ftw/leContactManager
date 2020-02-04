@@ -59,7 +59,7 @@
                             </div>
                             <div class="col-12 col-md-6 my-2">
                                 <label for="birthday">Birthday</label>
-                                <input type="text" placeholder="YYYY-MM-DD" id="birthday" class="form-control" />
+                                <input type="text" placeholder="MMDDYYYY" id="birthday" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -78,6 +78,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
         <script>
+            // TODO: put this in a linked script
 
             const form = document.getElementById('newContactForm');
 
@@ -88,6 +89,10 @@
                 // Prevent page refresh
                 e.preventDefault();
 
+                if(validateForm() === false) {
+                    return false;
+                }
+
                 const newUserData = {
                     "userID": userID,
                     "firstName": $("#firstName").val(),
@@ -97,6 +102,7 @@
                     "birthday": $("#birthday").val()
                 }
 
+                // Clear form
                 $(".form-control").val('');
 
                 console.log(JSON.stringify(newUserData));
@@ -106,17 +112,39 @@
                 });
             }
 
+            // GET request at url
             async function getData(url) {
                 const res = await fetch(url);
                 return await res.json();
             }
 
+            // PUT request at url with args object
             async function putData(url, args) {
                 const res = await fetch(url, {
                     method: 'PUT',
                     body: JSON.stringify(args),
                 });
                 return await res.json();
+            }
+
+            // Enforces mmddyyyy on birthdate field
+            // TODO: more validation
+            function validateForm() {
+                const birthdateField = $("#birthday");
+                const validDate = /(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])(19|20)\d\d/;
+
+                if(validDate.test(birthdateField.val()) === false) {
+                    // Reset the field
+                    birthdateField.val('');
+
+                    birthdateField.addClass('is-invalid');
+                    $("<div class='invalid-feedback'>Please use mmddyyyy</div>").insertAfter(birthdateField);
+                    return false;
+                }
+
+                birthdateField.removeClass('is-invalid');
+                $(".invalid-feedback").remove();
+                return true;
             }
 
         </script>
