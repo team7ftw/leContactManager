@@ -6,14 +6,11 @@ body {
 body {
   background-color: #262130;
   color: #FFFFFF;
-  margin: 100;
+  margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px
-
 }
 a {
   color: #FF8665;
@@ -26,6 +23,11 @@ a:hover {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#top-bar {
+  background-color: #FF8665;
+  height: 0.25em;
 }
 
 /* header container */
