@@ -45,8 +45,8 @@ def showUsersTable():
 		retString = "\n"
 		connection = connect()
 		cursor = connection.cursor()
-
 		cursor.execute("USE ContactManagerDB;")
+
 		cursor.execute("SELECT * FROM users;")
 		all = cursor.fetchall()
 		retString += "Read " + str(cursor.rowcount) + " row(s) of data.\n"
@@ -70,8 +70,8 @@ def showContactsTable():
 		retString = "\n"
 		connection = connect()
 		cursor = connection.cursor()
-
 		cursor.execute("USE ContactManagerDB;")
+
 		cursor.execute("SELECT * FROM contacts;")
 		all = cursor.fetchall()
 		retString += "Read " + str(cursor.rowcount) + " row(s) of data.\n"
@@ -90,30 +90,15 @@ def showContactsTable():
 		tb = traceback.format_exc()
 		return "Exception:\n" + tb
 
-@app.route('/users', methods= ['GET', 'PUT', 'POST', 'DELETE'])
+@app.route('/users', methods= ['PUT', 'POST', 'DELETE'])
 def userFunctions():
 	
 		try:
 			connection = connect()
 			cursor = connection.cursor()
-			
 			cursor.execute("USE ContactManagerDB")
-
-			if request.method == 'GET':
-				json_input = request.get_json(force=True)
-				username = json_input['username']
-				password = json_input['password']
-				
-				# DATABASE CALL TO RETREVIVE
-				query = "SELECT * FROM users WHERE login_un='{}' AND login_pw='{}';".format(username, password)
-				cursor.execute(query)
-				all = cursor.fetchall()	
-
-				cleanup(connection, cursor)
-				
-				return jsonify(all)
 			
-			elif request.method == 'PUT':
+			if request.method == 'PUT':
 				json_input = request.get_json(force=True)
 				username = json_input['username']
 				password = json_input['password']
@@ -160,59 +145,63 @@ def userFunctions():
 				
 		except Exception as e:
 			return jsonify({"result": "Error", "Info": str(e)})
+
+@app.route('/users/get', methods=['POST'])
+def usersGet():
+	try:
+		connection = connect()
+		cursor = connection.cursor()
+		cursor.execute("USE ContactManagerDB")
+
+		json_input = request.get_json(force=True)
+		username = json_input['username']
+		password = json_input['password']
 			
-@app.route('/user/contacts', methods = ['GET'])
+		# DATABASE CALL TO RETREVIVE
+		query = "SELECT * FROM users WHERE login_un='{}' AND login_pw='{}';".format(username, password)
+		cursor.execute(query)
+		all = cursor.fetchall()	
+
+		cleanup(connection, cursor)
+				
+		return jsonify(all)
+	
+	except Exception as e:
+		return jsonify({"result": "Error", "Info": str(e)})
+
+			
+@app.route('/user/contacts/get', methods = ['POST'])
 def getUserContacts():
 	try:
 		connection = connect()
 		cursor = connection.cursor()
-			
 		cursor.execute("USE ContactManagerDB")
-		
-		if request.method == 'GET':
-			json_data = request.get_json(force=True)
-			usrID = json_data['userID']
+
+		json_data = request.get_json(force=True)
+		usrID = json_data['userID']
 			
-			# DATABASE CALL TO GET ALL CONTACTS THAT BELONG TO USE
-			query = "SELECT contactID, firstName, lastName FROM contacts WHERE ref_id={}".format(usrID)
-			cursor.execute(query)
+		# DATABASE CALL TO GET ALL CONTACTS THAT BELONG TO USE
+		query = "SELECT contactID, firstName, lastName FROM contacts WHERE ref_id={}".format(usrID)
+		cursor.execute(query)
 			
-			all = cursor.fetchall()
+		all = cursor.fetchall()
 			
-			cleanup(connection, cursor)
+		cleanup(connection, cursor)
 			
-			return jsonify(all)
-		
-		else:
-			return "None"
+		return jsonify(all)
+
 	except Exception as e:
 		return jsonify({"Error" : str(e)})
 			
 
-@app.route('/user/contacts/contact', methods = ['GET', 'PUT', 'POST', 'DELETE'])
+@app.route('/user/contacts/contact', methods = ['PUT', 'POST', 'DELETE'])
 def userContact():
 	try:
 		connection = connect()
 		cursor = connection.cursor()
-			
 		cursor.execute("USE ContactManagerDB")
-
-		
-		if request.method == 'GET':
-			json_data = request.get_json(force=True)
-			userID = json_data['userID']
-			contactID = json_data['contactID']
 			
-			# DATABASE TO GET CONTACT DATA
-			query = "SELECT * FROM contacts WHERE ref_id={} AND contactID={}".format(userID, contactID) 
-			cursor.execute(query)
-			all = cursor.fetchall()
-			
-			cleanup(connection, cursor)
-			
-			return jsonify(all)
-			
-		elif request.method == 'PUT':
+		if request.method == 'PUT':
 			json_data = request.get_json(force=True)
 			
 			userID = json_data['userID']
@@ -266,6 +255,29 @@ def userContact():
 	
 	except Exception as e:
 		return jsonify({"Error": str(e)})
+
+@app.route('/user/contacts/contact/get', methods = ['POST'])
+def userContactsContactGet():
+	try:
+		connection = connect()
+		cursor = connection.cursor()
+		cursor.execute("USE ContactManagerDB")
+
+		json_data = request.get_json(force=True)
+		userID = json_data['userID']
+		contactID = json_data['contactID']
+			
+		# DATABASE TO GET CONTACT DATA
+		query = "SELECT * FROM contacts WHERE ref_id={} AND contactID={}".format(userID, contactID) 
+		cursor.execute(query)
+		all = cursor.fetchall()
+			
+		cleanup(connection, cursor)
+			
+		return jsonify(all)
+
+	except Exception as e:
+		return jsonify({"Error" : str(e)})
 			
 		
 def connect():
