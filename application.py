@@ -28,7 +28,7 @@ def resetTables():
 		retString += "Finished dropping users table (if existed)\n"
 		cursor.execute("CREATE TABLE users (userID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50) UNIQUE, login_pw VARCHAR(50));")
 		retString += "Created new users table.\n"
-		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(10), birthday VARCHAR(6), address VARCHAR(50), CONSTRAINT  fk_ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
+		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(10), birthday VARCHAR(6), address VARCHAR(50), CONSTRAINT  ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
 		retString += "Created new contacts table.\n"
 
 		cleanup(connection, cursor)
@@ -222,6 +222,7 @@ def userContact():
 			json_data = request.get_json(force=True)
 			
 			userID = json_data['userID']
+			contactID = json_data['contactID']
 			firstName = json_data['firstName']
 			lastName = json_data['lastName']
 			phoneNumber = json_data['phoneNumber']
@@ -230,7 +231,7 @@ def userContact():
 			
 			
 			# DATABASE CALL TO UPDATE CONTACT
-			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNumber='{}', address='{}', birthday='{}' WHERE fk_ref_id={} AND contactID={};".format(firstName, lastName, phoneNumber, address, birthday, userID, contactID)
+			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNumber='{}', address='{}', birthday='{}' WHERE ref_id={} AND contactID={};".format(firstName, lastName, phoneNumber, address, birthday, userID, contactID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
@@ -243,7 +244,7 @@ def userContact():
 			contactID = json_data['contactID']
 			
 			# DATABASE CALL TO REMOVE CONTACT
-			query = "DELETE FROM contacts WHERE contactID={} AND fk_ref_id={};".format(contactID, userID)
+			query = "DELETE FROM contacts WHERE contactID={} AND ref_id={};".format(contactID, userID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 				
