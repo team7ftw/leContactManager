@@ -1,3 +1,5 @@
+import * as validate from './validation.js';
+
 const form = document.getElementById('newContactForm');
 
 // For development, user is hardcoded
@@ -15,7 +17,7 @@ form.onsubmit = e => {
     // Prevent page refresh
     e.preventDefault();
 
-    if(validateForm() === false) {
+    if(validate.validateForm() === false) {
         return false;
     }
 

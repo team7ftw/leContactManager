@@ -1,3 +1,5 @@
+// import * as validate from './validation.js';
+
 const form = document.getElementById('newContactForm');
 
 // TODO: Change to active user, access localStorage
