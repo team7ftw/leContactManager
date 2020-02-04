@@ -223,7 +223,7 @@ def userContact():
 			birthday = json_data['birthday']
 			
 			# DATABASE CALL TO INSERT NEW CONTACT
-			query = "INSERT INTO contacts (ref_id, firstName, lastName, phoneNumber, address, birthday) VALUES ('{}', '{}', '{}', '{}', '{}', {});".format(firstName, lastName, phoneNumber, address, birthday, userID)
+			query = "INSERT INTO contacts (ref_id, firstName, lastName, phoneNumber, address, birthday) VALUES ('{}', '{}', '{}', '{}', '{}', {});".format(userID, firstName, lastName, phoneNumber, address, birthday)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
