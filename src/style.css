@@ -87,13 +87,13 @@ code {
 
 /* button container */
 
-.button-outline-fire {
+.btn-outline-fire {
   border-color: #FF8665;
   color: #FF8665;
   background-color: #262130;
 }
 
-.button-outline-fire:hover {
+.btn-outline-fire:hover {
   background-color: #FF8665;
   transition: 0.3s;
 }
