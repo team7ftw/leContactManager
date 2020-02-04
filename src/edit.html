@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- BootStrap CDN -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+        <link rel="stylesheet" href="style.css" />
+
+        <title>Le Contact Manager</title>
+    </head>
+    <body class="text-light">
+        <noscript>You need JavaScript to use this app!</noscript>
+            <!-- Visual element -->
+            <div id="top-bar"></div>
+
+            <div class="container">
+
+                <nav class="navbar navbar-expand-lg navbar-dark bg-transparent px-0 py-3 mt-4">
+                    <h5 class="navbar-brand">Le Contact Manager</h5>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navMenu">
+                        <ul class="navbar-nav nav-pills ml-auto">
+                            <a class="nav-link px-2 ml-2" href="index.html">
+                                Contacts
+                            </a>
+                            <a class="nav-link px-2 ml-2" href="newcontact.html">
+                                New
+                            </a>
+                            <a class="nav-link px-2 ml-2" href="#">
+                                Account
+                            </a>
+                        </ul>
+                    </div>
+                </nav>
+
+                <main class="mt-4">
+                    <h2 class="mb-4">Edit Contact</h2>
+
+                    <form id="newContactForm">
+                        <div class="row">
+                            <div class="col-12 col-md-6 my-2">
+                                <label for="firstName">First Name</label>
+                                <input type="text" placeholder="First" id="firstName" class="form-control" />
+                            </div>
+                            <div class="col-12 col-md-6 my-2">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" placeholder="Last" id="lastName" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 my-2">
+                                <label for="phone">Phone Number</label>
+                                <input type="text" placeholder="(123) 456-7890" id="phone" class="form-control" />
+                            </div>
+                            <div class="col-12 col-md-6 my-2">
+                                <label for="birthday">Birthday</label>
+                                <input type="text" placeholder="MMDDYYYY" id="birthday" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Email</label>
+                            <input type="text" placeholder="email@example.com" id="address" class="form-control" />
+                        </div>
+                        <button class="btn btn-outline-fire mt-4" type="submit">Create</button>
+                    </form>
+
+                </main>
+            </div>
+
+        <!-- BootStrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+        <script>
+            // TODO: put this in a linked script
+
+            const form = document.getElementById('newContactForm');
+
+            // For development, user is hardcoded:
+            const userID = "2";
+
+            // Get form data from user to edit:
+            const contactID = localStorage.getItem('editID');
+            console.log(contactID);
+
+            // Populate form with contact info
+            populateForm(contactID);
+
+            form.onsubmit = e => {
+                // Prevent page refresh
+                e.preventDefault();
+
+                if(validateForm() === false) {
+                    return false;
+                }
+
+                const newUserData = {
+                    "userID": userID,
+                    "firstName": $("#firstName").val(),
+                    "lastName": $("#lastName").val(),
+                    "phoneNumber": $("#phone").val(),
+                    "address": $("#address").val(),
+                    "birthday": $("#birthday").val()
+                }
+
+                // Clear form
+                $(".form-control").val('');
+
+                console.log(JSON.stringify(newUserData));
+
+                fetch('https://cop4331group7api.azurewebsites.net/user/contacts/contact', {
+                    method: 'POST',
+                    body: newUserData
+                }).then( () => {
+                    alert('User updated!');
+                    window.location = 'index.html';
+                });
+            }
+
+            // GET request at url
+            async function getData(url) {
+                const res = await fetch(url);
+                return await res.json();
+            }
+
+            // PUT request at url with args object
+            async function putData(url, args) {
+                const res = await fetch(url, {
+                    method: 'PUT',
+                    body: JSON.stringify(args),
+                });
+                return await res.json();
+            }
+
+            // Enforces mmddyyyy on birthdate field
+            // TODO: more validation
+            function validateForm() {
+                const birthdateField = $("#birthday");
+                const validDate = /(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])(19|20)\d\d/;
+
+                if(validDate.test(birthdateField.val()) === false) {
+                    // Reset the field
+                    birthdateField.val('');
+                    $(".invalid-feedback").remove();
+                    birthdateField.addClass('is-invalid');
+                    $("<div class='invalid-feedback'>Please use mmddyyyy</div>").insertAfter(birthdateField);
+                    return false;
+                }
+
+                birthdateField.removeClass('is-invalid');
+                $(".invalid-feedback").remove();
+                return true;
+            }
+
+            function populateForm(contactID) {
+                const body = {
+                    'userID': parseInt(userID),
+                    'contactID': contactID
+                }
+
+                fetch('https://cop4331group7api.azurewebsites.net/user/contacts/contact/get', {
+                    method: 'POST',
+                    body: JSON.stringify(body)
+                }).then(res => {
+                    return res.json();
+                }).then(cjson => {
+                    $("#firstName").val(cjson[0][2]);
+                    $('#lastName').val(cjson[0][3]);
+                    $('#phone').val(cjson[0][4]);
+                    $('#birthday').val(cjson[0][5]);
+                    $('#address').val(cjson[0][6]);
+                });
+
+            }
+
+        </script>
+
+    </body>
+</html>
