@@ -299,7 +299,7 @@ def imageTest():
 		filename = f.filename
 		folder_path = "/contactimages"
 		f.save("./contactimages/" + filename)
-		stringthing = "UPDATE contacts SET imageFilename = '{}' WHERE contactID = '{}'".format(filename, filename[:filename.index(".")] + ";")
+		stringthing = "UPDATE contacts SET imageFilename = '{}' WHERE contactID = '{}';".format(filename, filename[:filename.index(".")])
 		return stringthing
 		cursor.execute(stringthing)
 
