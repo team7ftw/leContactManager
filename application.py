@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, url_for, send_from_directory, redirect
 from flask_restful import Api, Resource, reqparse
 from sqlalchemy import create_engine
 from json import dumps
@@ -8,9 +8,14 @@ import traceback
 import mysql.connector
 from mysql.connector import errorcode
 
+import os
+
 	
 app = Flask(__name__)
 #api = Api(app)
+
+# BASE_URL = "https://cop4331group7api.azurewebsites.net/"
+BASE_URL = "http://localhost:5000/"
 
 
 # https://m.youtube.com/watch?v=dkgRxBw_4no
@@ -28,7 +33,7 @@ def resetTables():
 		retString += "Finished dropping users table (if existed)\n"
 		cursor.execute("CREATE TABLE users (userID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50) UNIQUE, login_pw VARCHAR(50));")
 		retString += "Created new users table.\n"
-		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(10), birthday VARCHAR(6), address VARCHAR(50), CONSTRAINT  ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
+		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(10), birthday VARCHAR(6), address VARCHAR(50), imageFilename VARCHAR(100), CONSTRAINT  ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
 		retString += "Created new contacts table.\n"
 
 		cleanup(connection, cursor)
@@ -212,7 +217,7 @@ def userContact():
 			birthday = json_data['birthday']
 			
 			# DATABASE CALL TO INSERT NEW CONTACT
-			query = "INSERT INTO contacts (ref_id, firstName, lastName, phoneNumber, address, birthday) VALUES ('{}', '{}', '{}', '{}', '{}', '{}');".format(userID, firstName, lastName, phoneNumber, address, birthday)
+			query = "INSERT INTO contacts (ref_id, firstName, lastName, phoneNumber, address, birthday, imageFilename) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', 'default.png');".format(userID, firstName, lastName, phoneNumber, address, birthday)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
@@ -279,7 +284,47 @@ def userContactsContactGet():
 
 	except Exception as e:
 		return jsonify({"Error" : str(e)})
-			
+
+@app.route("/user/contacts/contact/photo", methods=['PUT'])
+def imageTest():
+	try:
+		f = None
+		for thisFile in request.files:
+			f = request.files[thisFile]
+			break
+		filename = f.filename
+		folder_path = "/contactimages"
+		f.save("./contactimages/" + filename)
+
+		return "Successfully saved " + folder_path + "/" + filename + "\n" + "URL for file: " + url_for('uploaded_file', filename=filename)
+	except Exception as e:
+		return jsonify({"Error" : str(e)})
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
+
+@app.route('/user/contacts/contact/photo/get', methods=['POST'])
+def getContactPhoto():
+	try:
+		connection = connect()
+		cursor = connection.cursor()
+		cursor.execute("USE ContactManagerDB")
+
+		json_data = request.get_json(force=True)
+		contactID = json_data['contactID']
+		cursor.execute("SELECT imageFilename FROM contacts WHERE contactID = '{}'".format(contactID))
+		record = cursor.fetchone()
+		filename = record[0]
+		
+		cleanup(connection,cursor)
+		return send_from_directory("./contactimages", filename)
+
+	except Exception as e:
+		return jsonify({"Error" : str(e)})
+
+
 		
 def connect():
 	connection = mysql.connector.connect(user="admins@cop4331group7dbserver", password="#cop4331", host="cop4331group7dbserver.mysql.database.azure.com", port=3306)
