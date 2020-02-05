@@ -1,4 +1,6 @@
-function registerUser() {
+function registerUser(e) {
+    e.preventDefault();
+
     const username = $('#username').val();
     const password = $('#password').val();
 
@@ -11,17 +13,16 @@ function registerUser() {
             })
         })
     .then(res => {
-        return res.json();
-    })
-    .then(rjson => {
-        console.log(rjson);
+        console.log(res.json());
 
         // TODO: Display this message in the page
         alert('Success');
     });
 }
 
-function submitLoginUser() {
+function submitLoginUser(e) {
+    e.preventDefault();
+
     const username = $('#username').val();
     const password = $('#password').val();
 
@@ -37,10 +38,12 @@ function submitLoginUser() {
         return res.json();
     })
     .then(rjson => {
-        // Check valid log in 
-        // THIS IS REALLY BAD
-        // TODO: SECURITY ???
-        console.log(rjson);
-
-    })
+        if(rjson == 0) {
+            alert('Incorrect username/password!');
+            $('#password').val('');
+        } else {
+            localStorage.setItem('currentUser', rjson[0][0]);
+            window.location = 'index.html';
+        }
+    });
 }
