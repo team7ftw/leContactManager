@@ -1,9 +1,9 @@
-// import * as validate from './validation.js';
-
 const form = document.getElementById('newContactForm');
 
-// TODO: Change to active user, access localStorage
-const userID = "2";
+var currentUser = localStorage.getItem('currentUser');
+if (currentUser === null) {
+    currentUser = 1; // Dev default
+}
 
 form.onsubmit = e => {
     // Prevent page refresh
@@ -14,7 +14,7 @@ form.onsubmit = e => {
     }
 
     const newUserData = {
-        "userID": userID,
+        "userID": currentUser.toString(),
         "firstName": $("#firstName").val(),
         "lastName": $("#lastName").val(),
         "phoneNumber": $("#phone").val(),

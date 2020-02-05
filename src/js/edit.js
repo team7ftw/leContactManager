@@ -1,14 +1,12 @@
-//import * as validate from './validation.js';
-
 const form = document.getElementById('newContactForm');
 
-// For development, user is hardcoded
-// TODO: Save to localStorage after log in
-const userID = "2";
+var currentUser = localStorage.getItem('currentUser');
+if (currentUser === null) {
+    currentUser = 1; // Dev default
+}
 
 // Get form data from user to edit:
 const contactID = localStorage.getItem('editID');
-console.log(contactID);
 
 // Populate form with contact info
 populateForm(contactID);
@@ -22,7 +20,7 @@ form.onsubmit = e => {
     }
 
     const newUserData = {
-        "userID": userID,
+        "userID": currentUser,
         "contactID": contactID.toString(),
         "firstName": $("#firstName").val(),
         "lastName": $("#lastName").val(),
@@ -64,7 +62,7 @@ async function putData(url, args) {
 
 function populateForm(contactID) {
     const body = {
-        'userID': parseInt(userID),
+        'userID': parseInt(currentUser),
         'contactID': contactID
     }
 

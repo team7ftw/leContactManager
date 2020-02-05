@@ -168,3 +168,7 @@ code {
   padding: 1.25rem 0;
   margin-bottom: 1rem;
 }
+
+.hidden {
+  visibility: hidden;
+}
