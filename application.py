@@ -14,8 +14,8 @@ import os
 app = Flask(__name__)
 #api = Api(app)
 
-# BASE_URL = "https://cop4331group7api.azurewebsites.net/"
-BASE_URL = "http://localhost:5000/"
+BASE_URL = "https://cop4331group7api.azurewebsites.net/"
+# BASE_URL = "http://localhost:5000/"
 
 
 # https://m.youtube.com/watch?v=dkgRxBw_4no
