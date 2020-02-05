@@ -178,10 +178,10 @@ def getUserContacts():
 		cursor.execute("USE ContactManagerDB")
 
 		json_data = request.get_json(force=True)
-		usrID = json_data['userID']
+		userID = json_data['userID']
 			
 		# DATABASE CALL TO GET ALL CONTACTS THAT BELONG TO USE
-		query = "SELECT contactID, firstName, lastName FROM contacts WHERE ref_id={}".format(usrID)
+		query = "SELECT contactID, firstName, lastName FROM contacts WHERE ref_id='{}'".format(userID)
 		cursor.execute(query)
 			
 		all = cursor.fetchall()
@@ -212,7 +212,7 @@ def userContact():
 			birthday = json_data['birthday']
 			
 			# DATABASE CALL TO INSERT NEW CONTACT
-			query = "INSERT INTO contacts (ref_id, firstName, lastName, phoneNumber, address, birthday) VALUES ('{}', '{}', '{}', '{}', '{}', {});".format(userID, firstName, lastName, phoneNumber, address, birthday)
+			query = "INSERT INTO contacts (ref_id, firstName, lastName, phoneNumber, address, birthday) VALUES ('{}', '{}', '{}', '{}', '{}', '{}');".format(userID, firstName, lastName, phoneNumber, address, birthday)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
@@ -231,7 +231,7 @@ def userContact():
 			
 			
 			# DATABASE CALL TO UPDATE CONTACT
-			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNumber='{}', address='{}', birthday='{}' WHERE ref_id={} AND contactID={};".format(firstName, lastName, phoneNumber, address, birthday, userID, contactID)
+			query = "UPDATE contacts SET firstName='{}', lastName='{}', phoneNumber='{}', address='{}', birthday='{}' WHERE ref_id='{}' AND contactID='{}';".format(firstName, lastName, phoneNumber, address, birthday, userID, contactID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
@@ -244,7 +244,7 @@ def userContact():
 			contactID = json_data['contactID']
 			
 			# DATABASE CALL TO REMOVE CONTACT
-			query = "DELETE FROM contacts WHERE contactID={} AND ref_id={};".format(contactID, userID)
+			query = "DELETE FROM contacts WHERE contactID='{}' AND ref_id='{}';".format(contactID, userID)
 			cursor.execute(query)
 			cleanup(connection, cursor)
 				
@@ -269,7 +269,7 @@ def userContactsContactGet():
 		contactID = json_data['contactID']
 			
 		# DATABASE TO GET CONTACT DATA
-		query = "SELECT * FROM contacts WHERE ref_id={} AND contactID={}".format(userID, contactID) 
+		query = "SELECT * FROM contacts WHERE ref_id='{}' AND contactID='{}'".format(userID, contactID) 
 		cursor.execute(query)
 		all = cursor.fetchall()
 			
