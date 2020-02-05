@@ -285,9 +285,13 @@ def userContactsContactGet():
 	except Exception as e:
 		return jsonify({"Error" : str(e)})
 
-@app.route("/user/contacts/contact/photo", methods=['PUT'])
+@app.route("/user/contacts/contact/photo", methods=['POST'])
 def imageTest():
 	try:
+		connection = connect()
+		cursor = connection.cursor()
+		cursor.execute("USE ContactManagerDB")
+
 		f = None
 		for thisFile in request.files:
 			f = request.files[thisFile]
@@ -295,6 +299,9 @@ def imageTest():
 		filename = f.filename
 		folder_path = "/contactimages"
 		f.save("./contactimages/" + filename)
+		stringthing = "UPDATE contacts SET imageFilename = '{}' WHERE contactID = '{}'".format(filename, filename[:filename.index(".")] + ";")
+		# return stringthing
+		cursor.execute(stringthing)
 
 		return "Successfully saved " + folder_path + "/" + filename + "\n" + "URL for file: " + url_for('uploaded_file', filename=filename)
 	except Exception as e:
@@ -317,7 +324,7 @@ def getContactPhoto():
 		cursor.execute("SELECT imageFilename FROM contacts WHERE contactID = '{}'".format(contactID))
 		record = cursor.fetchone()
 		filename = record[0]
-		
+
 		cleanup(connection,cursor)
 		return send_from_directory("./contactimages", filename)
 
