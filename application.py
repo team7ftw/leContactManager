@@ -5,6 +5,8 @@ from json import dumps
 import urllib
 import traceback
 
+from flask_cors import CORS
+
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -12,7 +14,9 @@ import os
 
 	
 app = Flask(__name__)
-#api = Api(app)
+CORS(app)
+
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 BASE_URL = "https://cop4331group7api.azurewebsites.net/"
 # BASE_URL = "http://localhost:5000/"
@@ -303,14 +307,9 @@ def imageTest():
 		cursor.execute(stringthing)
 
 		cleanup(connection,cursor)
-		return "Successfully saved " + folder_path + "/" + filename + "\n" + "URL for file: " + url_for('uploaded_file', filename=filename)
+		return jsonify({"result": "Success"})
 	except Exception as e:
 		return jsonify({"Error" : str(e)})
-
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
 
 @app.route('/user/contacts/contact/photo/get', methods=['POST'])
 def getContactPhoto():
