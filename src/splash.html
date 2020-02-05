@@ -15,24 +15,26 @@
 
 
     <!-- Custom CSS -->
-    <link href="index.css" rel="stylesheet" type="text/css">   
+    <link href="style.css" rel="stylesheet" type="text/css">   
 
 </head>
 
 <body class="text-center">
 
-<div class="header">
-	<h1 class="mt-5 mb-3">Le Contact Manager</h1>
-</div>
+	<div class="row"><img src="1.PNG" class="responsive"></div>
 
 	<!-- Login/Register Components -->
+
 	<form class="login-block">
+
 	<div class="center">
+
+
 	    <div class="container">
+
 			<div class="row">
 				<div class="col-md-4 login-sec">
 
-				    <h2 class="mt-5 mb-3 text-muted">Please sign in</h2>
 
 				    <!-- TODO: complete handle login errors here-->
 						<div class="alert alert-danger alert-dismissable" id="errorLoginAlert" role="alert" style="display: none;">
@@ -55,7 +57,7 @@
 				    <label for="Password" class="sr-only">Password</label>
 				    <input id="password" type="password" class="form-control" placeholder="Password"required>
 					</p>
-
+					
 				     <div class="checkbox mb-3">
 					    <label>
 					      <input type="checkbox" value="remember-me"> Remember me
@@ -65,9 +67,9 @@
  					<!-- Sign-in/Register button -->
  					<!-- TODO: pipe events to respective pages -->
 
-				    <button class="button-outline-fire btn btn-lg btn-block" type="submit" onclick="submitLoginUser(event)">Sign in</button>
+				    <button class="btn-outline-fire btn btn-lg btn-block" type="submit" onclick="submitLoginUser(event)">Sign in</button>
 
-					<button type="button" class="button-outline-fire btn btn-lg btn-block" onclick="registerUser(event)">Register</button>
+					<button type="button" class="btn-outline-fire btn btn-lg btn-block" onclick="registerUser(event)">Register</button>
 
 						<!-- TODO: process user registration ->
 						<!-- TODO: handle user registration-errors -->
