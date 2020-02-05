@@ -300,9 +300,10 @@ def imageTest():
 		folder_path = "/contactimages"
 		f.save("./contactimages/" + filename)
 		stringthing = "UPDATE contacts SET imageFilename = '{}' WHERE contactID = '{}'".format(filename, filename[:filename.index(".")] + ";")
-		# return stringthing
+		return stringthing
 		cursor.execute(stringthing)
 
+		cleanup(connection,cursor)
 		return "Successfully saved " + folder_path + "/" + filename + "\n" + "URL for file: " + url_for('uploaded_file', filename=filename)
 	except Exception as e:
 		return jsonify({"Error" : str(e)})
