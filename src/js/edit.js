@@ -1,4 +1,4 @@
-import * as validate from './validation.js';
+//import * as validate from './validation.js';
 
 const form = document.getElementById('newContactForm');
 
@@ -17,7 +17,7 @@ form.onsubmit = e => {
     // Prevent page refresh
     e.preventDefault();
 
-    if(validate.validateForm() === false) {
+    if(validateForm() === false) {
         return false;
     }
 
