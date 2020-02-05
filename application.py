@@ -16,8 +16,6 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
-
 BASE_URL = "https://cop4331group7api.azurewebsites.net/"
 # BASE_URL = "http://localhost:5000/"
 
