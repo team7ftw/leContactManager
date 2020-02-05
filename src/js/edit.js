@@ -11,10 +11,7 @@ const contactID = localStorage.getItem('editID');
 // Populate form with contact info
 populateForm(contactID);
 
-form.onsubmit = e => {
-    // Prevent page refresh
-    e.preventDefault();
-
+$('#submitEdit').click(function() {
     if (validateForm() === false) {
         return false;
     }
@@ -45,22 +42,41 @@ form.onsubmit = e => {
             alert('User updated!');
             window.location = 'index.html';
         });
-};
 
-// GET request at url
-async function getData(url) {
-    const res = await fetch(url);
-    return await res.json();
-}
+    $('#enableEdit').removeClass('hidden').show();
+    $('#submitEdit').addClass('hidden');
+    $('#cancelEdit').addClass('hidden');
 
-// PUT request at url with args object
-async function putData(url, args) {
-    const res = await fetch(url, {
-        method: 'PUT',
-        body: JSON.stringify(args)
-    });
-    return await res.json();
-}
+    $('input')
+        .addClass('form-control-plaintext text-light')
+        .removeClass('form-control')
+        .prop('readonly', true);
+});
+
+$('#enableEdit').click(function() {
+    console.log('Edit');
+    $('#enableEdit').addClass('hidden').hide();
+    $('#submitEdit').removeClass('hidden');
+    $('#cancelEdit').removeClass('hidden');
+
+    $('input')
+        .removeClass('form-control-plaintext text-light')
+        .addClass('form-control')
+        .prop('readonly', false);
+});
+
+$('#cancelEdit').click(function() {
+    populateForm(contactID);
+
+    $('#enableEdit').removeClass('hidden').show();
+    $('#submitEdit').addClass('hidden');
+    $('#cancelEdit').addClass('hidden');
+
+    $('input')
+        .addClass('form-control-plaintext text-light')
+        .removeClass('form-control')
+        .prop('readonly', true);
+});
 
 function populateForm(contactID) {
     const body = {

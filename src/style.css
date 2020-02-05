@@ -152,7 +152,7 @@ code {
   padding: 10px;
 }
 
-/* Optional alternate styling for forms pages ? */
+/* Optional alternate styling for forms pages ? 
 
 .form-control, .form-control:focus {
   font-family: inherit;
@@ -168,6 +168,8 @@ code {
   padding: 1.25rem 0;
   margin-bottom: 1rem;
 }
+
+*/
 
 .hidden {
   visibility: hidden;
