@@ -133,6 +133,11 @@ function populateForm(contactID, refresh) {
 
 // Get a string representing a birthday from a 6-digit string.
 function getBirthdayString(s) {
+    if(/(^\d{6}$)/.test(s) === false) {
+        // Unparseable string
+        return s;
+    }
+
     var month = parseInt(s.substring(0, 2), 10);
     var day = parseInt(s.substring(2, 4), 10);
     var year = parseInt(s.substring(4, 6));
