@@ -1,17 +1,21 @@
 // Get form data from user to edit:
 const contactID = localStorage.getItem('editID');
 
-fetch('https://cop4331group7api.azurewebsites.net/user/contacts/contact/photo/get', {
-    method: 'POST',
-    body: JSON.stringify({
-        'contactID': contactID
-    })
-}).then(res => {
-    return res.blob();
-}).then(myBlob => {
-    $('#avatar').css('background', 'url(' + URL.createObjectURL(myBlob) + ') 50% 50% no-repeat')
-        .css('background-size', '120px');
-});
+updatePhoto();
+
+function updatePhoto() {
+    fetch('https://cop4331group7api.azurewebsites.net/user/contacts/contact/photo/get', {
+        method: 'POST',
+        body: JSON.stringify({
+            'contactID': contactID
+        })
+    }).then(res => {
+        return res.blob();
+    }).then(myBlob => {
+        $('#avatar').css('background', 'url(' + URL.createObjectURL(myBlob) + ') 50% 50% no-repeat')
+            .css('background-size', '120px');
+    });
+}
 
 // Page elements
 const form = document.getElementById('newContactForm');
@@ -73,6 +77,8 @@ $('#submitEdit').click(function() {
     });
 
     // Toggle UI
+    updatePhoto();
+
     $('#uploadForm').addClass('hidden');
 
     $('#enableEdit')
