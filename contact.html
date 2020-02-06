@@ -26,7 +26,7 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navMenu">
-                        <ul class="navbar-nav nav-pills ml-auto">
+                        <ul class="navbar-nav nav-pills mr-auto">
                             <a class="nav-link px-2 ml-2 active" href="#">
                                 Contacts
                             </a>
@@ -37,6 +37,10 @@
                                 Account
                             </a>
                         </ul>
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control ml-sm-2" type="search" placeholder="Search" />
+                            <button class="btn btn-outline-fire my-2 my-sm-0 ml-sm-2" type="submit">Search</button>
+                        </form>
                     </div>
                 </nav>
 
@@ -62,6 +66,7 @@
                 </main>
             </div>        
 
+            <!-- Delete confirmation modal -->
             <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content bg-dark bg-dark text-light">
