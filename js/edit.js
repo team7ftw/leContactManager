@@ -100,10 +100,11 @@ function populateForm(contactID, refresh) {
             return res.json();
         })
         .then(cjson => {
+            var birthdayString = getBirthdayString(cjson[0][5])
             $('#firstName').val(cjson[0][2]);
             $('#lastName').val(cjson[0][3]);
             $('#phone').val(cjson[0][4]);
-            $('#birthday').val(cjson[0][5]);
+            $('#birthday').val(birthdayString);
             $('#address').val(cjson[0][6]);
 
             const name = cjson[0][2] + ' ' + cjson[0][3];
@@ -119,4 +120,25 @@ function populateForm(contactID, refresh) {
                     .fadeIn();
             }
         });
+}
+
+// Get a string representing a birthday from a 6-digit string.
+function getBirthdayString(s) {
+    var month = parseInt(s.substring(0, 2), 10);
+    var day = parseInt(s.substring(2, 4), 10);
+    var year = parseInt(s.substring(4, 6));
+    if (year < 21) {
+        year += 2000;
+    }
+    else {
+        year += 1900;
+    }
+
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var result = "";
+    result += months[month-1] + " ";
+    result += day + ", ";
+    result += year;
+    
+    return result;
 }
