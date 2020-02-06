@@ -37,7 +37,7 @@ $('#submitEdit').click(function() {
             // Clear form
             $('.form-control').val('');
 
-            alert('User updated!');
+            $('#successToast').toast("show");
         });
 
     $('#enableEdit')
