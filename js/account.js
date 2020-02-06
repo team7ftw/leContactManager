@@ -21,7 +21,7 @@ $(document).ready(function() {
 $("#updateUser").click(() => {
     // Generate salt
     const salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    
+
     const newUsername = $("#newUsername").val();
 
     // Check if username is taken
@@ -43,9 +43,10 @@ $("#updateUser").click(() => {
     fetch("https://cop4331group7api.azurewebsites.net/users", {
         method: "POST",
         body: JSON.stringify({
-            currentUsername: currentUsername,
-            newUsername: newUsername,
-            newPassword: $("#newPass").val()
+            'currentUsername': currentUsername,
+            'newUsername': newUsername,
+            'newPassword': md5($("#newPass").val() + salt),
+            'newSalt': salt
         })
     }).then(res => {
         $("#successToast")
