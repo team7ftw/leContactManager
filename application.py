@@ -166,11 +166,14 @@ def usersGet():
 		# DATABASE CALL TO RETREVIVE
 		query = "SELECT userID, salt FROM users WHERE login_un='{}';".format(username)
 		cursor.execute(query)
-		all = cursor.fetchall()	
+		try:
+			result = cursor.fetchone()
+		except Exception as e:
+			result = []
 
 		cleanup(connection, cursor)
 				
-		return jsonify(all)
+		return jsonify(result)
 	
 	except Exception as e:
 		return jsonify({"result": "Error", "Info": str(e)})
