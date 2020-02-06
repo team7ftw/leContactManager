@@ -13,8 +13,6 @@ function registerUser(e) {
             })
         })
     .then(res => {
-        console.log(res.json());
-
         // TODO: Display this message in the page
         alert('Success');
     });
@@ -43,6 +41,7 @@ function submitLoginUser(e) {
             $('#password').val('');
         } else {
             localStorage.setItem('currentUser', rjson[0][0]);
+            localStorage.setItem('currentUsername', rjson[0][1]);
             window.location = 'contact.html';
         }
     });

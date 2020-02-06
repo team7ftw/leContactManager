@@ -2,6 +2,9 @@ const form = document.getElementById('newContactForm');
 
 // Hide hidden toasts so they don't cover UI
 $('.toast').hide();
+$('.toast').on('hidden.bs.toast', function() {
+    $('.toast').hide(); 
+ });
 
 var currentUser = localStorage.getItem('currentUser');
 if (currentUser === null) {

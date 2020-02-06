@@ -14,6 +14,9 @@ const contactID = localStorage.getItem('editID');
 
 // Hide hidden toasts so they don't cover UI
 $('.toast').hide();
+$('.toast').on('hidden.bs.toast', function() {
+    $('.toast').hide(); 
+ });
 
 // Populate form with contact info
 populateForm(contactID, true);
