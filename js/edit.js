@@ -1,5 +1,9 @@
+// Page elements
 const form = document.getElementById('newContactForm');
+const birthdateForm = $('#birthday');
 
+// Global vars
+var birthdayDigits = $('#birthday').val();
 var currentUser = localStorage.getItem('currentUser');
 if (currentUser === null) {
     currentUser = 1; // Dev default
@@ -41,6 +45,7 @@ $('#submitEdit').click(function() {
             $('.form-control').val('');
 
             $('#successToast').show().toast("show");
+            populateForm(contactID);
         });
 
     $('#enableEdit')
@@ -56,6 +61,8 @@ $('#submitEdit').click(function() {
 });
 
 $('#enableEdit').click(function() {
+    birthdateForm.val(birthdayDigits);
+
     $('#enableEdit')
         .addClass('hidden')
         .hide();
@@ -100,7 +107,9 @@ function populateForm(contactID, refresh) {
             return res.json();
         })
         .then(cjson => {
-            var birthdayString = getBirthdayString(cjson[0][5])
+            birthdayDigits = cjson[0][5];
+            var birthdayString = getBirthdayString(birthdayDigits);
+
             $('#firstName').val(cjson[0][2]);
             $('#lastName').val(cjson[0][3]);
             $('#phone').val(cjson[0][4]);
