@@ -64,6 +64,15 @@ code {
   padding:25px;
 }
 
+/* avatar container */
+
+.avatar {
+	position: right;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+}
+
 /* form container */
 
 .form-signin {
