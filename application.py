@@ -35,7 +35,7 @@ def resetTables():
 		retString += "Finished dropping users table (if existed)\n"
 		cursor.execute("CREATE TABLE users (userID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50) UNIQUE, login_pw VARCHAR(50));")
 		retString += "Created new users table.\n"
-		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(10), birthday VARCHAR(6), address VARCHAR(50), imageFilename VARCHAR(100), CONSTRAINT  ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
+		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(50), birthday VARCHAR(6), address VARCHAR(50), imageFilename VARCHAR(100), CONSTRAINT  ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
 		retString += "Created new contacts table.\n"
 
 		cleanup(connection, cursor)
@@ -103,7 +103,7 @@ def userFunctions():
 		try:
 			connection = connect()
 			cursor = connection.cursor()
-			cursor.execute("USE ContactManagerDB")
+			cursor.execute("USE ContactManagerDB;")
 			
 			if request.method == 'PUT':
 				json_input = request.get_json(force=True)
@@ -158,7 +158,7 @@ def usersGet():
 	try:
 		connection = connect()
 		cursor = connection.cursor()
-		cursor.execute("USE ContactManagerDB")
+		cursor.execute("USE ContactManagerDB;")
 
 		json_input = request.get_json(force=True)
 		username = json_input['username']
@@ -182,7 +182,7 @@ def getUserContacts():
 	try:
 		connection = connect()
 		cursor = connection.cursor()
-		cursor.execute("USE ContactManagerDB")
+		cursor.execute("USE ContactManagerDB;")
 
 		json_data = request.get_json(force=True)
 		userID = json_data['userID']
@@ -206,7 +206,7 @@ def userContact():
 	try:
 		connection = connect()
 		cursor = connection.cursor()
-		cursor.execute("USE ContactManagerDB")
+		cursor.execute("USE ContactManagerDB;")
 			
 		if request.method == 'PUT':
 			json_data = request.get_json(force=True)
@@ -269,14 +269,14 @@ def userContactsContactGet():
 	try:
 		connection = connect()
 		cursor = connection.cursor()
-		cursor.execute("USE ContactManagerDB")
+		cursor.execute("USE ContactManagerDB;")
 
 		json_data = request.get_json(force=True)
 		userID = json_data['userID']
 		contactID = json_data['contactID']
 			
 		# DATABASE TO GET CONTACT DATA
-		query = "SELECT * FROM contacts WHERE ref_id='{}' AND contactID='{}'".format(userID, contactID) 
+		query = "SELECT * FROM contacts WHERE ref_id='{}' AND contactID='{}';".format(userID, contactID) 
 		cursor.execute(query)
 		all = cursor.fetchall()
 			
@@ -292,7 +292,7 @@ def imageTest():
 	try:
 		connection = connect()
 		cursor = connection.cursor()
-		cursor.execute("USE ContactManagerDB")
+		cursor.execute("USE ContactManagerDB;")
 
 		f = None
 		for thisFile in request.files:
@@ -314,16 +314,78 @@ def getContactPhoto():
 	try:
 		connection = connect()
 		cursor = connection.cursor()
-		cursor.execute("USE ContactManagerDB")
+		cursor.execute("USE ContactManagerDB;")
 
 		json_data = request.get_json(force=True)
 		contactID = json_data['contactID']
-		cursor.execute("SELECT imageFilename FROM contacts WHERE contactID = '{}'".format(contactID))
+		cursor.execute("SELECT imageFilename FROM contacts WHERE contactID = '{}';".format(contactID))
 		record = cursor.fetchone()
 		filename = record[0]
 
 		cleanup(connection,cursor)
 		return send_from_directory("./contactimages", filename)
+
+	except Exception as e:
+		return jsonify({"Error" : str(e)})
+
+@app.route('/user/contacts/search', methods = ['POST'])
+def searchContacts():
+	try:
+		connection = connect()
+		cursor = connection.cursor()
+		cursor.execute("USE ContactManagerDB;")
+
+		json_data = request.get_json(force=True)
+		userID = json_data['userID']
+		searchString = str(json_data['searchString']).lower()
+		cursor.execute("SELECT contactID, firstName, lastName  FROM contacts WHERE ref_id='{}';".format(userID))
+
+		if (len(searchString)) == 0:
+			rows = cursor.fetchall()
+
+			thisList = []
+			i = 0
+			for row in rows:
+				thisList.append([i, row[0], row[1], row[2]])
+				i = i + 1
+			
+			result = thisList
+			cleanup(connection, cursor)
+			return jsonify(result)
+
+		firstNameStartsWithList = []
+		lastNameStartsWithList = []
+		otherList = []
+		rows = cursor.fetchall()
+		for row in rows:
+			if row[1].lower().replace(" ", "").startswith(searchString):
+				firstNameStartsWithList.append([0, row[0], row[1], row[2]])
+			elif row[1].lower().replace(" ", "").startswith(searchString):
+				lastNameStartsWithList.append([0, row[0], row[1], row[2]])
+			elif searchString in (row[1] + row[2]).lower().replace(" ", ""):
+				otherList.append([0, row[0], row[1], row[2]])
+		
+		firstNameStartsWithList.sort()
+		lastNameStartsWithList.sort()
+		otherList.sort()
+		
+		finalList = []
+		for i in firstNameStartsWithList:
+			finalList.append(i)
+		for i in lastNameStartsWithList:
+			finalList.append(i)
+		for i in otherList:
+			finalList.append(i)
+
+		j = 0
+		for i in finalList:
+			i[0] = j
+			j = j + 1
+		
+		result = finalList
+
+		cleanup(connection,cursor)
+		return jsonify(result)
 
 	except Exception as e:
 		return jsonify({"Error" : str(e)})
