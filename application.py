@@ -33,7 +33,7 @@ def resetTables():
 		retString += "Finished dropping contacts table (if existed)\n"
 		cursor.execute("DROP TABLE IF EXISTS users;")
 		retString += "Finished dropping users table (if existed)\n"
-		cursor.execute("CREATE TABLE users (userID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50) UNIQUE, login_pw VARCHAR(50));")
+		cursor.execute("CREATE TABLE users (userID INT PRIMARY KEY AUTO_INCREMENT, login_un VARCHAR(50) UNIQUE, login_pw VARCHAR(50), salt VARCHAR(50));")
 		retString += "Created new users table.\n"
 		cursor.execute("CREATE TABLE contacts (contactID INT PRIMARY KEY AUTO_INCREMENT, ref_id INT NOT NULL, firstName VARCHAR(50), lastName VARCHAR(50), phoneNumber VARCHAR(50), birthday VARCHAR(6), address VARCHAR(50), imageFilename VARCHAR(100), CONSTRAINT  ref_id FOREIGN KEY (ref_id) REFERENCES users (userID));")
 		retString += "Created new contacts table.\n"
