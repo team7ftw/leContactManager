@@ -9,7 +9,7 @@ if (currentUser === null) {
 const contactID = localStorage.getItem('editID');
 
 // Populate form with contact info
-populateForm(contactID);
+populateForm(contactID, true);
 
 $('#submitEdit').click(function() {
     if (validateForm() === false) {
@@ -68,7 +68,7 @@ $('#enableEdit').click(function() {
 });
 
 $('#cancelEdit').click(function() {
-    populateForm(contactID);
+    populateForm(contactID, false);
 
     $('#enableEdit')
         .removeClass('hidden')
@@ -82,7 +82,7 @@ $('#cancelEdit').click(function() {
         .prop('readonly', true);
 });
 
-function populateForm(contactID) {
+function populateForm(contactID, refresh) {
     const body = {
         userID: parseInt(currentUser),
         contactID: contactID
@@ -112,9 +112,11 @@ function populateForm(contactID) {
         })
         .then(() => {
             // Display content
-            $('main')
-                .hide()
-                .removeClass('hidden')
-                .fadeIn();
+            if (refresh) {
+                $('main')
+                    .hide()
+                    .removeClass('hidden')
+                    .fadeIn();
+            }
         });
 }
