@@ -162,10 +162,9 @@ def usersGet():
 
 		json_input = request.get_json(force=True)
 		username = json_input['username']
-		password = json_input['password']
 			
 		# DATABASE CALL TO RETREVIVE
-		query = "SELECT * FROM users WHERE login_un='{}' AND login_pw='{}';".format(username, password)
+		query = "SELECT userID, salt FROM users WHERE login_un='{}';".format(username)
 		cursor.execute(query)
 		all = cursor.fetchall()	
 
