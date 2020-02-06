@@ -1,4 +1,4 @@
-function registerUser(e) {
+async function registerUser(e) {
     // Prevent page reload
     e.preventDefault();
 
@@ -13,8 +13,8 @@ function registerUser(e) {
     const hashedPass = md5(password + salt);
 
     // Ensure valid username
-    if(checkNameAvailable(username) === false) {
-        alert('Username is taken!');
+    const valid = await checkNameAvailable(username);
+    if(!valid) {
         return false;
     }
 
@@ -29,8 +29,8 @@ function registerUser(e) {
         })
     .then(res => {
         // TODO: Replace with toast
+        alert('Success!');
         console.log(res.json());
-        alert('Success');
     });
 }
 
@@ -54,49 +54,39 @@ function submitLoginUser(e) {
         const salt = data[1];
 
         const hashedPass = md5(password + salt);
-    });
 
-    /*
-    fetch('https://cop4331group7api.azurewebsites.net/users/get',
-        {
+        fetch('https://cop4331group7api.azurewebsites.net/users/login', {
             method: 'POST',
             body: JSON.stringify({
                 'username': username,
-                'password': password
+                'password': hashedPass
             })
+        }).then(res => {
+            return res.json();
+        }).then(data => {
+            localStorage.setItem('currentUser', data[0]);
+            localStorage.setItem('currentUsername', username);
+
+            window.location = 'contact.html'
         })
-    .then(res => {
-        return res.json();
-    })
-    .then(rjson => {
-        if(rjson == 0) {
-            alert('Incorrect username/password!');
-            $('#password').val('');
-        } else {
-            localStorage.setItem('currentUser', rjson[0][0]);
-            localStorage.setItem('currentUsername', rjson[0][1]);
-            window.location = 'contact.html';
-        }
     });
-    */
 }
 
 // Check if username is taken
-function checkNameAvailable(name) {
-    fetch("https://cop4331group7api.azurewebsites.net/dev/showtable/users")
-    .then(res => {
-        return res.text();
-    })
-    .then(data => {
-        // Fetch usernames from string
-        const usernames = /row = \d ([a-zA-Z]*) /gm;
-    
-        const matches = data.matchAll(usernames);
-        for (const m of matches) {
-            if (m[1] === name) alert("User already exists!");
-            return false;
-        }
+async function checkNameAvailable(name) {
+    const res = await fetch('https://cop4331group7api.azurewebsites.net/users/get', {
+        method: 'POST',
+        body: JSON.stringify({
+            'username': name
+        })
     });
 
-    return true;
+    const json = await res.json();
+
+    if (json != 0) {
+        alert('User already exists');
+        return false;
+    } else {
+        return true;
+    }
 }
