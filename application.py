@@ -395,6 +395,28 @@ def searchContacts():
 	except Exception as e:
 		return jsonify({"Error" : str(e)})
 
+@app.route("/users/login", methods=['POST'])
+def verifyLogin():
+	try:
+		connection = connect()
+		cursor = connection.cursor()
+		cursor.execute("USE ContactManagerDB;")
+		json_data = request.get_json(force=True)
+		
+		username = json_data['username']
+		password = json_data['password']
+
+		cursor.execute("SELECT userID FROM USERS WHERE login_un = '{}' AND login_pw = '{}'".format(username, password))
+
+		try:
+			result = cursor.fetchone()
+			errortest = result[0]
+			return jsonify(result)
+		except Exception as e:
+			cleanup(connection,cursor)
+			return jsonify([])
+	except Exception as e:
+		return jsonify({"Error" : str(e)})
 
 		
 def connect():
