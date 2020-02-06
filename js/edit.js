@@ -24,8 +24,6 @@ if (currentUser === null) {
     currentUser = 1; // Dev default
 }
 
-
-
 // Hide hidden toasts so they don't cover UI
 $('.toast').hide();
 $('.toast').on('hidden.bs.toast', function() {
@@ -65,6 +63,18 @@ $('#submitEdit').click(function() {
             populateForm(contactID);
         });
 
+    // Handle image upload
+    const fileInput = $('#uploadPic');
+    const formData = new FormData();
+    formData.append('file', fileInput.prop('files')[0]);
+    fetch(('https://cop4331group7api.azurewebsites.net/user/contacts/contact/photo?contactID=' + contactID), {
+        method: 'POST',
+        body: formData
+    });
+
+    // Toggle UI
+    $('#uploadForm').addClass('hidden');
+
     $('#enableEdit')
         .removeClass('hidden')
         .show();
@@ -80,6 +90,8 @@ $('#submitEdit').click(function() {
 $('#enableEdit').click(function() {
     birthdateForm.val(birthdayDigits);
 
+    $('#uploadForm').removeClass('hidden');
+
     $('#enableEdit')
         .addClass('hidden')
         .hide();
@@ -94,6 +106,8 @@ $('#enableEdit').click(function() {
 
 $('#cancelEdit').click(function() {
     populateForm(contactID, false);
+
+    $('#uploadForm').addClass('hidden');
 
     $('#enableEdit')
         .removeClass('hidden')

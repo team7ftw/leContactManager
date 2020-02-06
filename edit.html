@@ -40,7 +40,21 @@
 
                 <main class="mt-4 hidden">
                     <h2 class="mb-4" id="contactName"><!-- Contact Name --></h2>
-                    <div id="avatar" style="background: url(image2.jpg) 50% 50% no-repeat; background-size: 100px; width: 100px; height: 100px;" class="rounded-circle mb-4"></div>
+                    <div class="row">
+                        <div class="col-12 col-sm-2">
+                            <div id="avatar" style="background: url(image2.jpg) 50% 50% no-repeat; background-size: 100px; width: 100px; height: 100px;" class="rounded-circle mb-4"></div>
+                        </div>
+                        <div class="col-12 col-sm-8 hidden" id="uploadForm">
+                            
+                                <div class="form-group">
+                                    <label for="uploadPic">Upload contact photo</label>
+                                    <input type="file" class="form-control-file" id="uploadPic">
+                                </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
                     <form id="newContactForm">
                         <div class="row">
                             <div class="col-12 col-md-6 my-2">

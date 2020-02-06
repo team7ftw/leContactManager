@@ -32,6 +32,8 @@ form.onsubmit = e => {
         birthday: $('#birthday').val()
     };
 
+
+
     // Clear form
     $('.form-control').val('');
 
