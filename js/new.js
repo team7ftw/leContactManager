@@ -28,8 +28,8 @@ form.onsubmit = e => {
     putData(
         'https://cop4331group7api.azurewebsites.net/user/contacts/contact',
         newUserData
-    ).then(res => {
-        alert('User added!');
+    ).then( () => {
+        $('#successToast').toast("show");
     });
 };
 
