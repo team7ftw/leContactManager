@@ -168,8 +168,10 @@ def usersGet():
 		cursor.execute(query)
 		try:
 			result = cursor.fetchone()
+			errortest = result[0]
 		except Exception as e:
-			result = []
+			cleanup(connection,cursor)
+			return jsonify([])
 
 		cleanup(connection, cursor)
 				
