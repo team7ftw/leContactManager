@@ -11,6 +11,8 @@ const contactID = localStorage.getItem('editID');
 // Populate form with contact info
 populateForm(contactID);
 
+
+
 $('#submitEdit').click(function() {
     if (validateForm() === false) {
         return false;
@@ -100,5 +102,16 @@ function populateForm(contactID) {
             $('#phone').val(cjson[0][4]);
             $('#birthday').val(cjson[0][5]);
             $('#address').val(cjson[0][6]);
+
+            const name = cjson[0][2] +  ' ' + cjson[0][3];
+            console.log(name);
+
+            $('#contactName').html(name);
+            
+        })
+        .then( () => {
+            // Display content
+            $('main').hide().removeClass('hidden').fadeIn();
         });
+
 }
