@@ -1,4 +1,6 @@
 var currentUser;
+var delTD;
+var delID;
 
 try {
     currentUser = localStorage.getItem('currentUser');
@@ -37,7 +39,12 @@ try {
                         '<a href="#" onclick="gotoEdit(' + e[0] + ')">View</a>'
                     ),
                     $('<td>').html(
+                        /*
                         '<a href="#" onclick="deleteContact(' +
+                            e[0] +
+                            ', this)">Delete</a>'
+                        */
+                        '<a href="#" data-toggle="modal" data-target="#confirmDelete" onclick="setDelete(' +
                             e[0] +
                             ', this)">Delete</a>'
                     )
@@ -56,14 +63,21 @@ function gotoEdit(id) {
     window.location = 'edit.html';
 }
 
-function deleteContact(id, td) {
-    const domrow = $(td)
+function setDelete(id, td) {
+    delTD = td;
+    delID = id;
+}
+
+function deleteContact() {
+    $('#confirmDelete').modal('hide');
+    
+    const domrow = $(delTD)
         .parent()
         .parent();
 
     const body = {
         userID: currentUser,
-        contactID: id
+        contactID: delID
     };
 
     // TODO: Fade element instantly, then catch errors
