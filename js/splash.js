@@ -51,7 +51,9 @@ function submitLoginUser(e) {
     }).then(res => {
         return res.json();
     }).then(data => {
-        console.log(data);
+        const salt = data[1];
+
+        const hashedPass = md5(password + salt);
     });
 
     /*
