@@ -17,7 +17,7 @@ try {
         userID: currentUser
     };
 
-    // Populate table with contact list
+    // Fetch contact list JSON
     fetch('https://cop4331group7api.azurewebsites.net/user/contacts/get', {
         method: 'POST',
         body: JSON.stringify(userData),
@@ -30,6 +30,7 @@ try {
         })
         .then(cjson => {
             $.each(cjson, (i, e) => {
+                // Populate table
                 const row = $('<tr>');
                 row.append(
                     $('<td>').text(i),
@@ -49,6 +50,8 @@ try {
                             ', this)">Delete</a>'
                     )
                 ).appendTo('#contact-table');
+
+                // Fade table in once loaded completely
                 $('#contact-table')
                     .removeClass('hidden')
                     .hide()
@@ -56,6 +59,28 @@ try {
             });
         });
 }
+
+// Update table on search submit
+$('#contactSearch').submit(e => {
+    e.preventDefault();
+
+    const s = $('#contactQuery').val();
+    updateSearchResults(s);
+});
+
+// Reset table on clear search bar
+$('#contactQuery').keyup(function() {
+    if(!this.value) {
+        updateSearchResults('');
+    }
+});
+
+// Reset table on clear field 'x'
+$('#contactQuery').on('search', function() {
+    if(!this.value) {
+        updateSearchResults('');
+    }
+});
 
 function gotoEdit(id) {
     localStorage.setItem('editID', id);
@@ -80,7 +105,6 @@ function deleteContact() {
         contactID: delID
     };
 
-    // TODO: Fade element instantly, then catch errors
     fetch('https://cop4331group7api.azurewebsites.net/user/contacts/contact', {
         method: 'DELETE',
         body: JSON.stringify(body)
@@ -88,5 +112,57 @@ function deleteContact() {
         domrow.fadeOut(200, () => {
             domrow.remove();
         });
+    });
+}
+
+function updateSearchResults(query) {
+    $('#contact-table').hide();
+
+    fetch('https://cop4331group7api.azurewebsites.net/user/contacts/search', {
+        method: 'POST',
+        body: JSON.stringify({
+            'userID': currentUser,
+            'searchString': query
+        })
+    }).then(res => {
+        return res.json();
+    }).then(data => {
+        console.log(data.length === 0);
+        // New code since the format of this response differs
+
+        // Clear table
+        $('tbody').empty();
+
+        // No results found
+        if(data.length === 0) {
+            const p = $('<p>');
+            p.text('No results found.')
+            p.attr('id', 'no-results');
+            p.addClass('py-4')
+            p.appendTo('#contact-table');
+        } else {
+            $('#no-results').remove();
+        }
+
+        for(const c of data) {
+            const row = $('<tr>');
+            row.append(
+                $('<td>').text(c[0]),
+                $('<td>').text(c[2]),
+                $('<td>').text(c[3]),
+                $('<td>').html(
+                    '<a href="#" onclick="gotoEdit(' + c[1] + ')"View</a>'
+                ),
+                $('<td>').html(
+                    '<a href="#" data-toggle="modal" data-target="#confirmDelete" onclick="setDelete(' + 
+                    c[1] +
+                    ', this)">Delete</a>'
+                )
+            ).appendTo('#contact-table');
+
+            
+        }
+
+        $('#contact-table').fadeIn();
     });
 }
