@@ -11,6 +11,10 @@ if (currentUser === null) {
     currentUser = 1; // Dev default
 }
 
+$('document').ready(function() {
+    $('main').hide().removeClass('hidden').fadeIn();
+});
+
 form.onsubmit = e => {
     // Prevent page refresh
     e.preventDefault();
