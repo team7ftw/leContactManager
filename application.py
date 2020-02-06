@@ -124,9 +124,10 @@ def userFunctions():
 				currentUsername = json_input['currentUsername']
 				newUsername = json_input['newUsername']
 				newPassword = json_input['newPassword']
+				newSalt = json_input['newSalt']
 				
 				# DATABASE CALL TO UPDATE USER
-				query = "UPDATE users SET login_un='{}', login_pw='{}' WHERE login_un='{}';".format(newUsername, newPassword, currentUsername)
+				query = "UPDATE users SET login_un='{}', login_pw='{}', salt = '{}' WHERE login_un='{}';".format(newUsername, newPassword, newSalt, currentUsername)
 				cursor.execute(query)
 				
 				cleanup(connection, cursor)
