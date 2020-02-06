@@ -147,7 +147,9 @@ function updateSearchResults(query) {
                     $('<td>').text(c[2]),
                     $('<td>').text(c[3]),
                     $('<td>').html(
-                        '<a href="#" onclick="gotoEdit(' + c[1] + ')"View</a>'
+                        '<a href="#" onclick="gotoEdit(' + 
+                            c[1] + 
+                            ')">View</a>'
                     ),
                     $('<td>').html(
                         '<a href="#" data-toggle="modal" data-target="#confirmDelete" onclick="setDelete(' +
