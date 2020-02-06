@@ -34,7 +34,7 @@ try {
                     $('<td>').text(e[1]),
                     $('<td>').text(e[2]),
                     $('<td>').html(
-                        '<a href="#" onclick="gotoEdit(' + e[0] + ')">Edit</a>'
+                        '<a href="#" onclick="gotoEdit(' + e[0] + ')">View</a>'
                     ),
                     $('<td>').html(
                         '<a href="#" onclick="deleteContact(' +

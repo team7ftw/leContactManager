@@ -26,8 +26,6 @@ $('#submitEdit').click(function() {
         birthday: $('#birthday').val()
     };
 
-    console.log(JSON.stringify(newUserData));
-
     fetch('https://cop4331group7api.azurewebsites.net/user/contacts/contact', {
         method: 'POST',
         body: JSON.stringify(newUserData)
@@ -106,7 +104,6 @@ function populateForm(contactID, refresh) {
             $('#address').val(cjson[0][6]);
 
             const name = cjson[0][2] + ' ' + cjson[0][3];
-            console.log(name);
 
             $('#contactName').html(name);
         })
