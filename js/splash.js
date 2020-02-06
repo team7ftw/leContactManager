@@ -29,6 +29,7 @@ function registerUser(e) {
         })
     .then(res => {
         // TODO: Replace with toast
+        console.log(res.json());
         alert('Success');
     });
 }
@@ -37,9 +38,23 @@ function submitLoginUser(e) {
     // Prevent page reload
     e.preventDefault();
 
+    // Get form values
     const username = $('#username').val();
     const password = $('#password').val();
 
+    // Retreive salt
+    fetch('https://cop4331group7api.azurewebsites.net/users/get', {
+        method: 'POST',
+        body: JSON.stringify({
+            'username': username
+        })
+    }).then(res => {
+        return res.json();
+    }).then(data => {
+        console.log(data);
+    });
+
+    /*
     fetch('https://cop4331group7api.azurewebsites.net/users/get',
         {
             method: 'POST',
@@ -61,6 +76,7 @@ function submitLoginUser(e) {
             window.location = 'contact.html';
         }
     });
+    */
 }
 
 // Check if username is taken
