@@ -19,6 +19,9 @@ $(document).ready(function() {
 });
 
 $("#updateUser").click(() => {
+    // Generate salt
+    const salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    
     const newUsername = $("#newUsername").val();
 
     // Check if username is taken

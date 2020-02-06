@@ -64,6 +64,12 @@ function submitLoginUser(e) {
         }).then(res => {
             return res.json();
         }).then(data => {
+            console.log(data);
+            if (data == 0) {
+                alert('Incorrect username/password!');
+                $('input').val('');
+                return false;
+            }
             localStorage.setItem('currentUser', data[0]);
             localStorage.setItem('currentUsername', username);
 
