@@ -4,6 +4,11 @@ function registerUser(e) {
     const username = $('#username').val();
     const password = $('#password').val();
 
+    if(checkNameAvailable(username) === false) {
+        alert('Username is taken!');
+        return false;
+    }
+
     fetch('https://cop4331group7api.azurewebsites.net/users',
         {
             method: 'PUT',
@@ -45,4 +50,24 @@ function submitLoginUser(e) {
             window.location = 'contact.html';
         }
     });
+}
+
+// Check if username is taken
+function checkNameAvailable(name) {
+    fetch("https://cop4331group7api.azurewebsites.net/dev/showtable/users")
+    .then(res => {
+        return res.text();
+    })
+    .then(data => {
+        // Fetch usernames from string
+        const usernames = /row = \d ([a-zA-Z]*) /gm;
+    
+        const matches = data.matchAll(usernames);
+        for (const m of matches) {
+            if (m[1] === name) alert("User already exists!");
+            return false;
+        }
+    });
+
+    return true;
 }
