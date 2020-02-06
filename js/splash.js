@@ -2,9 +2,17 @@ function registerUser(e) {
     // Prevent page reload
     e.preventDefault();
 
+    // Generate salt
+    const salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+    // Get values
     const username = $('#username').val();
     const password = $('#password').val();
 
+    // Hash password and salt
+    const hashedPass = md5(password + salt);
+
+    // Ensure valid username
     if(checkNameAvailable(username) === false) {
         alert('Username is taken!');
         return false;
@@ -15,11 +23,12 @@ function registerUser(e) {
             method: 'PUT',
             body: JSON.stringify({
                 'username': username,
-                'password': password
+                'password': hashedPass,
+                'salt': salt
             })
         })
     .then(res => {
-        // TODO: Display this message in the page
+        // TODO: Replace with toast
         alert('Success');
     });
 }
