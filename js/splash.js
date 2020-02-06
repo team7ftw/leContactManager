@@ -1,4 +1,5 @@
 function registerUser(e) {
+    // Prevent page reload
     e.preventDefault();
 
     const username = $('#username').val();
@@ -24,6 +25,7 @@ function registerUser(e) {
 }
 
 function submitLoginUser(e) {
+    // Prevent page reload
     e.preventDefault();
 
     const username = $('#username').val();

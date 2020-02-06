@@ -40,11 +40,6 @@ try {
                         '<a href="#" onclick="gotoEdit(' + e[0] + ')">View</a>'
                     ),
                     $('<td>').html(
-                        /*
-                        '<a href="#" onclick="deleteContact(' +
-                            e[0] +
-                            ', this)">Delete</a>'
-                        */
                         '<a href="#" data-toggle="modal" data-target="#confirmDelete" onclick="setDelete(' +
                             e[0] +
                             ', this)">Delete</a>'
@@ -70,14 +65,14 @@ $('#contactSearch').submit(e => {
 
 // Reset table on clear search bar
 $('#contactQuery').keyup(function() {
-    if(!this.value) {
+    if (!this.value) {
         updateSearchResults('');
     }
 });
 
 // Reset table on clear field 'x'
 $('#contactQuery').on('search', function() {
-    if(!this.value) {
+    if (!this.value) {
         updateSearchResults('');
     }
 });
@@ -95,7 +90,7 @@ function setDelete(id, td) {
 
 function deleteContact() {
     $('#confirmDelete').modal('hide');
-    
+
     const domrow = $(delTD)
         .parent()
         .parent();
@@ -121,48 +116,47 @@ function updateSearchResults(query) {
     fetch('https://cop4331group7api.azurewebsites.net/user/contacts/search', {
         method: 'POST',
         body: JSON.stringify({
-            'userID': currentUser,
-            'searchString': query
+            userID: currentUser,
+            searchString: query
         })
-    }).then(res => {
-        return res.json();
-    }).then(data => {
-        console.log(data.length === 0);
-        // New code since the format of this response differs
+    })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            // New code since the format of this response differs
 
-        // Clear table
-        $('tbody').empty();
+            // Clear table
+            $('tbody').empty();
 
-        // No results found
-        if(data.length === 0) {
-            const p = $('<p>');
-            p.text('No results found.')
-            p.attr('id', 'no-results');
-            p.addClass('py-4')
-            p.appendTo('#contact-table');
-        } else {
-            $('#no-results').remove();
-        }
+            // No results found
+            if (data.length === 0) {
+                const p = $('<p>');
+                p.text('No results found.');
+                p.attr('id', 'no-results');
+                p.addClass('py-4');
+                p.appendTo('#contact-table');
+            } else {
+                $('#no-results').remove();
+            }
 
-        for(const c of data) {
-            const row = $('<tr>');
-            row.append(
-                $('<td>').text(c[0]),
-                $('<td>').text(c[2]),
-                $('<td>').text(c[3]),
-                $('<td>').html(
-                    '<a href="#" onclick="gotoEdit(' + c[1] + ')"View</a>'
-                ),
-                $('<td>').html(
-                    '<a href="#" data-toggle="modal" data-target="#confirmDelete" onclick="setDelete(' + 
-                    c[1] +
-                    ', this)">Delete</a>'
-                )
-            ).appendTo('#contact-table');
+            for (const c of data) {
+                const row = $('<tr>');
+                row.append(
+                    $('<td>').text(c[0]),
+                    $('<td>').text(c[2]),
+                    $('<td>').text(c[3]),
+                    $('<td>').html(
+                        '<a href="#" onclick="gotoEdit(' + c[1] + ')"View</a>'
+                    ),
+                    $('<td>').html(
+                        '<a href="#" data-toggle="modal" data-target="#confirmDelete" onclick="setDelete(' +
+                            c[1] +
+                            ', this)">Delete</a>'
+                    )
+                ).appendTo('#contact-table');
+            }
 
-            
-        }
-
-        $('#contact-table').fadeIn();
-    });
+            $('#contact-table').fadeIn();
+        });
 }
