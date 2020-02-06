@@ -8,6 +8,9 @@ if (currentUser === null) {
 // Get form data from user to edit:
 const contactID = localStorage.getItem('editID');
 
+// Hide hidden toasts so they don't cover UI
+$('.toast').hide();
+
 // Populate form with contact info
 populateForm(contactID, true);
 
@@ -37,7 +40,7 @@ $('#submitEdit').click(function() {
             // Clear form
             $('.form-control').val('');
 
-            $('#successToast').toast("show");
+            $('#successToast').show().toast("show");
         });
 
     $('#enableEdit')

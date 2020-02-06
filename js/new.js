@@ -1,5 +1,8 @@
 const form = document.getElementById('newContactForm');
 
+// Hide hidden toasts so they don't cover UI
+$('.toast').hide();
+
 var currentUser = localStorage.getItem('currentUser');
 if (currentUser === null) {
     currentUser = 1; // Dev default
@@ -29,7 +32,7 @@ form.onsubmit = e => {
         'https://cop4331group7api.azurewebsites.net/user/contacts/contact',
         newUserData
     ).then( () => {
-        $('#successToast').toast("show");
+        $('#successToast').show().toast("show");
     });
 };
 
