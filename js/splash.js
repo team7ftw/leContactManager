@@ -9,6 +9,11 @@ async function registerUser(e) {
     const username = $('#username').val();
     const password = $('#password').val();
 
+    if(username.length == 0 || password.length == 0) {
+        alert('Please enter a username and password');
+        return false;
+    }
+
     // Hash password and salt
     const hashedPass = md5(password + salt);
 
@@ -41,6 +46,11 @@ function submitLoginUser(e) {
     // Get form values
     const username = $('#username').val();
     const password = $('#password').val();
+
+    if(username.length == 0 || password.length == 0) {
+        alert('Please enter a username and password');
+        return false;
+    }
 
     // Retreive salt
     fetch('https://cop4331group7api.azurewebsites.net/users/get', {
