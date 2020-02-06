@@ -43,7 +43,7 @@ function submitLoginUser(e) {
             $('#password').val('');
         } else {
             localStorage.setItem('currentUser', rjson[0][0]);
-            window.location = 'index.html';
+            window.location = 'contact.html';
         }
     });
 }
