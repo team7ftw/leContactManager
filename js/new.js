@@ -25,14 +25,11 @@ form.onsubmit = e => {
     // Clear form
     $('.form-control').val('');
 
-    console.log(JSON.stringify(newUserData));
-
     putData(
         'https://cop4331group7api.azurewebsites.net/user/contacts/contact',
         newUserData
     ).then(res => {
         alert('User added!');
-        console.log(res);
     });
 };
 
