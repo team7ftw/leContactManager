@@ -109,9 +109,10 @@ def userFunctions():
 				json_input = request.get_json(force=True)
 				username = json_input['username']
 				password = json_input['password']
+				salt = json_input['salt']
 				
 				# DATABASE CALL TO INSERT NEW USER
-				query = "INSERT INTO users (login_un, login_pw) VALUES ('{}', '{}');".format(username, password)
+				query = "INSERT INTO users (login_un, login_pw, salt) VALUES ('{}', '{}', '{}');".format(username, password, salt)
 				cursor.execute(query)
 				
 				cleanup(connection, cursor)
