@@ -11,8 +11,6 @@ const contactID = localStorage.getItem('editID');
 // Populate form with contact info
 populateForm(contactID);
 
-
-
 $('#submitEdit').click(function() {
     if (validateForm() === false) {
         return false;
@@ -42,10 +40,11 @@ $('#submitEdit').click(function() {
             $('.form-control').val('');
 
             alert('User updated!');
-            window.location = 'index.html';
         });
 
-    $('#enableEdit').removeClass('hidden').show();
+    $('#enableEdit')
+        .removeClass('hidden')
+        .show();
     $('#submitEdit').addClass('hidden');
     $('#cancelEdit').addClass('hidden');
 
@@ -56,8 +55,9 @@ $('#submitEdit').click(function() {
 });
 
 $('#enableEdit').click(function() {
-    console.log('Edit');
-    $('#enableEdit').addClass('hidden').hide();
+    $('#enableEdit')
+        .addClass('hidden')
+        .hide();
     $('#submitEdit').removeClass('hidden');
     $('#cancelEdit').removeClass('hidden');
 
@@ -70,7 +70,9 @@ $('#enableEdit').click(function() {
 $('#cancelEdit').click(function() {
     populateForm(contactID);
 
-    $('#enableEdit').removeClass('hidden').show();
+    $('#enableEdit')
+        .removeClass('hidden')
+        .show();
     $('#submitEdit').addClass('hidden');
     $('#cancelEdit').addClass('hidden');
 
@@ -103,15 +105,16 @@ function populateForm(contactID) {
             $('#birthday').val(cjson[0][5]);
             $('#address').val(cjson[0][6]);
 
-            const name = cjson[0][2] +  ' ' + cjson[0][3];
+            const name = cjson[0][2] + ' ' + cjson[0][3];
             console.log(name);
 
             $('#contactName').html(name);
-            
         })
-        .then( () => {
+        .then(() => {
             // Display content
-            $('main').hide().removeClass('hidden').fadeIn();
+            $('main')
+                .hide()
+                .removeClass('hidden')
+                .fadeIn();
         });
-
 }
