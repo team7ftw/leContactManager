@@ -299,6 +299,8 @@ def imageTest():
 		connection = connect()
 		cursor = connection.cursor()
 		cursor.execute("USE ContactManagerDB;")
+		
+		cID = request.args.get("contactID", "")
 
 		f = None
 		for thisFile in request.files:
@@ -307,7 +309,7 @@ def imageTest():
 		filename = f.filename
 		folder_path = "/contactimages"
 		f.save("./contactimages/" + filename)
-		stringthing = "UPDATE contacts SET imageFilename = '{}' WHERE contactID = '{}';".format(filename, filename[:filename.index(".")])
+		stringthing = "UPDATE contacts SET imageFilename = '{}' WHERE contactID = '{}';".format(filename, cID)
 		cursor.execute(stringthing)
 
 		cleanup(connection,cursor)
