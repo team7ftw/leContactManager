@@ -229,7 +229,7 @@ def userContact():
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
-			return jsonify({"result": "Success"})
+			return jsonify([contactID])
 			
 		elif request.method == 'POST':
 			json_data = request.get_json(force=True)
@@ -312,6 +312,25 @@ def imageTest():
 
 		cleanup(connection,cursor)
 		return jsonify({"result": "Success"})
+	except Exception as e:
+		return jsonify({"Error" : str(e)})
+
+@app.route('/user/contacts/contact/photo/get', methods=['POST'])
+def getContactPhoto():
+	try:
+		connection = connect()
+		cursor = connection.cursor()
+		cursor.execute("USE ContactManagerDB;")
+
+		json_data = request.get_json(force=True)
+		contactID = json_data['contactID']
+		cursor.execute("SELECT imageFilename FROM contacts WHERE contactID = '{}';".format(contactID))
+		record = cursor.fetchone()
+		filename = record[0]
+
+		cleanup(connection,cursor)
+		return send_from_directory("./contactimages", filename)
+
 	except Exception as e:
 		return jsonify({"Error" : str(e)})
 
