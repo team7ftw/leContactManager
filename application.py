@@ -248,7 +248,7 @@ def userContact():
 			cursor.execute(query)
 			cleanup(connection, cursor)
 			
-			return jsonify({"result": "Success"})
+			return jsonify([contactID])
 			
 		elif request.method == 'DELETE':
 			json_data = request.get_json(force=True)
